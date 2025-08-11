@@ -33,7 +33,12 @@ function Index() {
 
   if (!dashboardStats.data) {
     return (
-      <p className="py-4 text-center">No dashboard stats yet. Add one above!</p>
+      <div className="flex flex-col gap-2">
+        {/* <p className="py-4 text-center">
+          No dashboard stats yet. Add one above!
+        </p> */}
+        <QuickActions />
+      </div>
     );
   }
 

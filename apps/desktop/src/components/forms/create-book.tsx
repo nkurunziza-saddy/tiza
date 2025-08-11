@@ -27,11 +27,13 @@ import { createBook, updateBook } from "@/utils/api";
 import type { Book } from "@/types/models";
 
 const bookSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  author: z.string().min(1, "Author is required"),
-  quantity: z.coerce.number().min(0, "Quantity must be non-negative"),
-  isbn: z.string().min(1, "ISBN is required"),
-  category: z.string().min(1, "Category is required"),
+  title: z.string().min(1, { message: "Please enter the book title." }),
+  author: z.string().min(1, { message: "Please enter the author's name." }),
+  quantity: z.coerce
+    .number()
+    .min(0, { message: "Quantity must be zero or greater." }),
+  isbn: z.string().min(1, { message: "Please enter the ISBN." }),
+  category: z.string().min(1, { message: "Please select a category." }),
   status: z.enum(["available", "unavailable"]).default("available"),
 });
 
@@ -76,7 +78,7 @@ export default function CreateBook({ book }: { book?: Book }) {
       author: book ? book.author : "",
       isbn: book ? book.isbn : "",
       category: book ? book.category : "",
-      quantity: book && book.quantity !== null ? (book.quantity ?? 0) : 1,
+      quantity: book && book.quantity !== null ? book.quantity ?? 0 : 1,
     },
   });
 

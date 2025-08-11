@@ -8,7 +8,7 @@ import { FormDialog } from "../form-dialog";
 export function QuickActions() {
   return (
     <Card>
-      <CardHeader className="p">
+      <CardHeader className="">
         <CardTitle>Quick Actions</CardTitle>
       </CardHeader>
       <CardContent className="pt-0">

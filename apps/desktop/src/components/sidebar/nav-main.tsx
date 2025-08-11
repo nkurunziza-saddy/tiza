@@ -6,6 +6,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Link } from "@tanstack/react-router";
+import { type LucideIcon } from "lucide-react";
 
 export function NavMain({
   items,
@@ -13,6 +14,7 @@ export function NavMain({
   items: {
     title: string;
     url: string;
+    icon: LucideIcon;
   }[];
 }) {
   return (
@@ -26,6 +28,7 @@ export function NavMain({
                 to={item.url}
                 className="[&.active]:bg-sidebar-accent [&.active]:text-sidebar-accent-foreground"
               >
+                <item.icon />
                 <span>{item.title}</span>
               </Link>
             </SidebarMenuButton>

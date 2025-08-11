@@ -30,19 +30,31 @@ import { createStudent, updateStudent } from "@/utils/api";
 export const studentSchema = z.object({
   name: z
     .string()
-    .min(2, "Name must be at least 2 characters")
-    .max(100, "Name is too long"),
-  grade: z.string().min(1, "Grade is required").max(50, "Grade is too long"),
+    .min(2, { message: "Full name must be at least 2 characters long." })
+    .max(100, { message: "Full name cannot exceed 100 characters." }),
+  grade: z
+    .string()
+    .min(1, { message: "Grade is required." })
+    .max(50, { message: "Grade value is too long." }),
   student_id: z
     .string()
-    .min(1, "Student ID is required")
-    .max(100, "Student ID is too long"),
+    .min(1, { message: "Student ID is required." })
+    .max(100, { message: "Student ID cannot exceed 100 characters." }),
   phone_number: z
     .string()
-    .refine((val) => {
-      const digits = val.replace(/\D/g, "");
-      return digits.length >= 10 && digits.length <= 15;
-    }, "Phone number must be digits")
+    .refine(
+      (val) => {
+        if (!val) return true; // allow optional
+        const digits = val.replace(/\D/g, "");
+        return (
+          /^\d+$/.test(digits) && digits.length >= 10 && digits.length <= 15
+        );
+      },
+      {
+        message:
+          "Phone number must contain only digits and be between 10 and 15 digits.",
+      }
+    )
     .optional(),
   status: z.enum(["active", "inactive"]).default("active"),
   created_at: z.string().optional(),
@@ -76,7 +88,7 @@ export default function CreateStudent({ student }: { student?: Student }) {
     defaultValues: {
       name: student ? student.name : "",
       grade: student ? student.grade : "6",
-      phone_number: student ? (student.phone_number ?? "") : "",
+      phone_number: student ? student.phone_number ?? "" : "",
       student_id: student ? student.student_id : "",
     },
   });

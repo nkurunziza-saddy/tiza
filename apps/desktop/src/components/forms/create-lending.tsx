@@ -32,10 +32,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FormDialog } from "../form-dialog";
 
 export const formSchema = z.object({
-  book_id: z.string().min(1, "Book ID is required"),
-  student_id: z.string().min(1, "Student ID is required"),
+  book_id: z.string().min(1, { message: "Please select a book." }),
+  student_id: z.string().min(1, { message: "Please select a student." }),
   status: z.enum(["lent", "returned"]).default("lent"),
-  due_date: z.date().min(new Date(), "Due date must be in the future"),
+  due_date: z
+    .date()
+    .refine((date) => date > new Date(), {
+      message: "Return date must be in the future.",
+    }),
 });
 
 export default function CreateLending() {

@@ -19,7 +19,7 @@ import { format } from "date-fns";
 import { FormDialog } from "../form-dialog";
 
 const formSchema = z.object({
-  studentId: z.string().min(1, "Lending record is required"),
+  studentId: z.string().min(1, "Lending identifier is required"),
 });
 
 export default function ReturnBook() {
