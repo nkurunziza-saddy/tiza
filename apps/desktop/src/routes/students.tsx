@@ -1,12 +1,14 @@
 import { DataTable } from "@/components/table/data-table";
-import { getAllStudents } from "@/utils/api";
+import { getAllLendings, getAllStudents, getOverdueBooks } from "@/utils/api";
 import { StudentColumn } from "@/utils/columns";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Badge } from "@/components/ui/badge";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, BookOpen, Clock } from "lucide-react";
 import { PageHeader, PageLayout } from "@/components/page-layout";
 import { StudentsPageSkeleton } from "@/components/skeletons/students-page";
+import { StatCard } from "@/components/dashboard/stat";
+import { stat } from "fs";
 
 export const Route = createFileRoute("/students")({
   component: StudentsPage,
@@ -21,6 +23,28 @@ function StudentsPage() {
     queryKey: ["getAllStudents"],
     queryFn: getAllStudents,
   });
+
+  const { data: lendings } = useQuery({
+    queryKey: ["getAllLendings"],
+    queryFn: getAllLendings,
+  });
+  const { data: overdueBooks } = useQuery({
+    queryKey: ["overdueBooks"],
+    queryFn: getOverdueBooks,
+  });
+
+  const stats = students
+    ? {
+        totalLendings: students.length,
+        activeLendings:
+          lendings?.filter((l) => l.status === "lent").length ?? 0,
+        overdue: overdueBooks?.length ?? 0,
+      }
+    : null;
+  const percentageLent =
+    stats?.activeLendings && stats.activeLendings > 0
+      ? (stats.activeLendings / stats.totalLendings) * 100
+      : 0;
 
   const gradeDistribution = students
     ? students.reduce((acc, student) => {
@@ -57,6 +81,29 @@ function StudentsPage() {
         title="Student Directory"
         description="Manage student records and track reading activity"
       />
+
+      {stats && (
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-6">
+          <StatCard
+            title="Total Lendings"
+            value={stats.totalLendings}
+            icon={BookOpen}
+            color="blue"
+          />
+          <StatCard
+            title="Active Loans"
+            value={`${percentageLent}%`}
+            icon={Clock}
+            color="green"
+          />
+          <StatCard
+            title="Overdue"
+            value={stats.overdue}
+            icon={AlertTriangle}
+            color="red"
+          />
+        </div>
+      )}
 
       <div className="space-y-3">
         <h3 className="text-sm font-medium text-muted-foreground">

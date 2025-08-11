@@ -48,7 +48,7 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
 
 interface StatCardProps {
   title: string;
-  value: number;
+  value: number | string;
   icon: React.ComponentType<{ className?: string }>;
   color: string;
   bgColor?: string;
@@ -61,7 +61,7 @@ export function StatCard({ title, value }: StatCardProps) {
         <dt className="text-sm font-medium text-muted-foreground">{title}</dt>
         <dd className="mt-4 flex items-baseline space-x-2.5">
           <span className="text-2xl font-semibold text-foreground">
-            {value.toLocaleString()}
+            {typeof value === "number" ? value.toLocaleString() : value}
           </span>
         </dd>
       </CardContent>
