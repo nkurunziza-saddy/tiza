@@ -12,6 +12,7 @@ pub async fn init_db(app_handle: &tauri::AppHandle) -> Result<Pool<Sqlite>, sqlx
     std::fs::create_dir_all(&app_data_dir).unwrap();
 
     let db_path = app_data_dir.join("library.db");
+    println!("Resolved database path: {}", db_path.display());
     let pool = SqlitePool::connect(&format!("sqlite:{}", db_path.display())).await?;
     sqlx::migrate!("./migrations").run(&pool).await?;
     Ok(pool)
