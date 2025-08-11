@@ -8,15 +8,13 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import {
-  // CircleDashed,
-  // CircleDotDashed,
   Sun,
   Moon,
-  // Palette,
   Sparkles,
-  Zap,
   Flame,
   Droplets,
+  Waves,
+  CloudMoon,
 } from "lucide-react";
 
 const themes = [
@@ -24,9 +22,9 @@ const themes = [
   { name: "dark", label: "Dark", icon: Moon },
   { name: "warm", label: "Warm Light", icon: Flame },
   { name: "cool", label: "Cool Light", icon: Droplets },
-  { name: "deep-blue", label: "Deep Blue", icon: Sparkles },
-  { name: "warm-dark", label: "Warm Dark", icon: Flame },
-  { name: "purple-dark", label: "Purple Dark", icon: Zap },
+  { name: "charcoal", label: "Charcoal", icon: Sparkles },
+  { name: "ocean", label: "Ocean Blue", icon: Waves },
+  { name: "twilight", label: "Twilight", icon: CloudMoon },
 ];
 
 export default function ThemeModeToggler() {

@@ -1,75 +1,87 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { getDashboardStats } from "@/utils/api";
-import Stat from "@/components/dashboard/stat";
-import { OverdueBooks } from "@/components/dashboard/overdue-books";
+import { cn } from "@/lib/utils";
 import { RecentActivity } from "@/components/dashboard/recent-activity";
+import { OverdueBooks } from "@/components/dashboard/overdue-books";
 import { QuickActions } from "@/components/dashboard/quick-actions";
 import { PopularBooks } from "@/components/dashboard/popular-books";
 import { LibraryStats } from "@/components/dashboard/library-stats";
+import { StatsOverview } from "@/components/dashboard/stat";
+import { PageHeader, PageLayout } from "@/components/page-layout";
+import { LoadingDashboard } from "@/components/skeletons/dashboard";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
 function Index() {
-  const dashboardStats = useQuery({
+  const {
+    data: dashboardStats,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["dashboardStats"],
     queryFn: getDashboardStats,
   });
 
-  if (dashboardStats.isLoading) {
-    return (
-      <div className="flex flex-1 flex-col gap-4 p-4">
-        {Array.from({ length: 24 }).map((_, index) => (
-          <div
-            key={index}
-            className="bg-muted/50 aspect-video h-12 w-full rounded-lg"
-          />
-        ))}
-      </div>
-    );
+  if (isLoading) {
+    return <LoadingDashboard />;
   }
 
-  if (!dashboardStats.data) {
+  if (error) {
     return (
-      <div className="flex flex-col gap-2">
-        {/* <p className="py-4 text-center">
-          No dashboard stats yet. Add one above!
-        </p> */}
-        <QuickActions />
+      <div className="min-h-[80vh] flex items-center justify-center">
+        <div className="text-center space-y-1">
+          <h2 className="font-medium">Failed to load dashboard</h2>
+          <p className="text-sm not-[]:text-muted-foreground">
+            Please try refreshing the page
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 w-full">
-          <Stat
-            name="Total Books"
-            stat={dashboardStats.data?.total_books ?? 0}
-          />
-          <Stat
-            name="Available"
-            stat={dashboardStats.data?.available_books ?? 0}
-          />
-          <Stat name="On Loan" stat={dashboardStats.data?.books_on_loan ?? 0} />
-          <Stat name="Overdue" stat={dashboardStats.data?.overdue_books ?? 0} />
-        </div>
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 mt-8">
-          <div className="xl:col-span-8 space-y-8">
-            <RecentActivity />
-            <OverdueBooks />
-          </div>
+    <PageLayout>
+      <PageHeader
+        title=" Library Dashboard"
+        description="Monitor your library's activity and performance"
+      />
 
-          <div className="xl:col-span-4 space-y-8">
-            <QuickActions />
-            <PopularBooks />
-            <LibraryStats />
-          </div>
-        </div>
+      <StatsOverview stats={dashboardStats} />
+
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
+        <MainContent className="xl:col-span-8" />
+        <Sidebar className="xl:col-span-4" />
       </div>
+    </PageLayout>
+  );
+}
+
+interface MainContentProps {
+  className?: string;
+}
+
+function MainContent({ className }: MainContentProps) {
+  return (
+    <div className={cn("space-y-8", className)}>
+      <RecentActivity />
+      <OverdueBooks />
+    </div>
+  );
+}
+
+interface SidebarProps {
+  className?: string;
+}
+
+function Sidebar({ className }: SidebarProps) {
+  return (
+    <div className={cn("space-y-8", className)}>
+      <QuickActions />
+      <PopularBooks />
+      <LibraryStats />
     </div>
   );
 }

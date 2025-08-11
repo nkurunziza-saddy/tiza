@@ -12,7 +12,6 @@ import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "next-themes";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { CurrentPage } from "@/components/sidebar/current-page";
-import RefreshButton from "@/components/refresh-button";
 import ThemeModeToggler from "@/components/mode-toggle";
 import "../styles/index.css";
 
@@ -39,9 +38,9 @@ function Root() {
         "dark",
         "warm",
         "cool",
-        "deep-blue",
-        "warm-dark",
-        "purple-dark",
+        "charcoal",
+        "ocean",
+        "twilight",
       ]}
     >
       <QueryClientProvider client={queryClient}>
@@ -58,7 +57,6 @@ function Root() {
                 <CurrentPage />
               </div>
               <div className="flex gap-2">
-                {/* <RefreshButton /> */}
                 <ThemeModeToggler />
               </div>
             </header>

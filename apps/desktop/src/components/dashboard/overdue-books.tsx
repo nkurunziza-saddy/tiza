@@ -1,3 +1,6 @@
+import { Clock } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Badge } from "../ui/badge";
 import {
   Card,
   CardContent,
@@ -5,76 +8,82 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Clock } from "lucide-react";
-import { Suspense } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getOverdueBooks } from "@/utils/api";
+import type { OverdueBook } from "@/types";
+import { LoadingCard } from "../skeletons/cards";
 
-function OverdueBooksContent() {
-  const overdueBooks = useQuery({
+export function OverdueBooks() {
+  const { data: overdueBooks, isLoading } = useQuery({
     queryKey: ["overdueBooks"],
     queryFn: getOverdueBooks,
   });
-  if (!overdueBooks.data) return null;
+
+  if (isLoading) return <LoadingCard title="Overdue Books" />;
+
   return (
-    <CardContent className="pt-0">
-      <div className="space-y-6">
-        {overdueBooks.data.length === 0 ? (
-          <div className="text-center text-muted-foreground py-6">
-            No overdue books
+    <Card>
+      <CardHeader className="">
+        <CardTitle>Overdue Books</CardTitle>
+        <CardDescription>Books requiring immediate attention</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {!overdueBooks?.length ? (
+          <div className="text-center py-8 text-muted-foreground">
+            <Clock className="size-8 mx-auto mb-4 opacity-50" />
+            <p>No overdue books!</p>
           </div>
         ) : (
-          overdueBooks.data.map((book) => (
-            <div key={book.id} className="border p-2">
-              <div className="flex items-start justify-between">
-                <div className="space-y-1">
-                  <div>
-                    <span className="font-medium">{book.book_title}</span>
-                    <span className="text-sm text-muted-foreground ml-2">
-                      by {book.author}
-                    </span>
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    <span>{book.student_name}</span>
-                    <span className="mx-2">•</span>
-                    <span>{book.grade}</span>
-                    <span className="mx-2">•</span>
-                    <span>ID: {book.student_id}</span>
-                  </div>
-                </div>
-                <Badge variant="destructive" className="shrink-0">
-                  {book.days_overdue} days overdue
-                </Badge>
-              </div>
-              <div className="mt-2 flex items-center text-xs text-muted-foreground">
-                <Clock className="mr-1 size-3" />
-                Due: {new Date(book.due_date).toLocaleDateString()}
-              </div>
-            </div>
-          ))
+          <div className="space-y-4">
+            {overdueBooks.map((book) => (
+              <OverdueBookItem key={book.id} book={book} />
+            ))}
+          </div>
         )}
-      </div>
-    </CardContent>
+      </CardContent>
+    </Card>
   );
 }
 
-export function OverdueBooks() {
+function OverdueBookItem({ book }: { book: OverdueBook }) {
+  const isHighPriority = book.days_overdue > 30;
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Overdue Books</CardTitle>
-        <CardDescription>
-          Books requiring immediate attention from students
-        </CardDescription>
-      </CardHeader>
-      <Suspense
-        fallback={
-          <div className="p-4 text-center">Loading overdue books...</div>
-        }
-      >
-        <OverdueBooksContent />
-      </Suspense>
-    </Card>
+    <div
+      className={cn(
+        "p-4 rounded-lg border transition-colors",
+        isHighPriority
+          ? "bg-destructive/5 border-destructive/20"
+          : "bg-card hover:bg-muted/50"
+      )}
+    >
+      <div className="flex items-start justify-between mb-3">
+        <div className="space-y-1">
+          <h4 className="font-medium">{book.book_title}</h4>
+          <p className="text-sm text-muted-foreground">by {book.author}</p>
+        </div>
+        <Badge
+          variant={isHighPriority ? "destructive" : "secondary"}
+          className="shrink-0"
+        >
+          {book.days_overdue} days overdue
+        </Badge>
+      </div>
+
+      <div className="flex items-center justify-between text-sm">
+        <div className="text-muted-foreground">
+          <span>{book.student_name}</span>
+          <span className="mx-2">•</span>
+          <span>{book.grade}</span>
+          <span className="mx-2">•</span>
+          <span>ID: {book.student_id}</span>
+        </div>
+      </div>
+
+      <div className="mt-2 flex items-center text-xs text-muted-foreground">
+        <Clock className="size-3 mr-1" />
+        Due: {new Date(book.due_date).toLocaleDateString()}
+      </div>
+    </div>
   );
 }

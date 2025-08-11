@@ -9,20 +9,22 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { DialogTrigger } from "@radix-ui/react-dialog";
-import { Plus } from "lucide-react";
+import { type LucideIcon, Plus } from "lucide-react";
 
 export function FormDialog({
   children,
   title,
   triggerText,
   description,
+  Icon = Plus,
   outline = false,
   big = false,
 }: {
   children: React.ReactNode;
   title: string;
-  triggerText?: string;
   description: string;
+  Icon?: LucideIcon;
+  triggerText?: string;
   outline?: boolean;
   big?: boolean;
 }) {
@@ -32,8 +34,9 @@ export function FormDialog({
         <Button
           {...(big ? { size: "lg" } : { size: "sm" })}
           {...(outline ? { variant: "secondary" } : {})}
+          className="px-2"
         >
-          <Plus className="w-4 h-4 mr-2 " />
+          <Icon className="w-4 h-4 mr-2 " />
           {triggerText ?? title}
         </Button>
       </DialogTrigger>
