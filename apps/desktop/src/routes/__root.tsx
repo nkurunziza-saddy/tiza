@@ -11,7 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "next-themes";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
-import { CurrentPage } from "@/components/layout/current-page";
+import { CurrentPage } from "@/components/sidebar/current-page";
 import RefreshButton from "@/components/refresh-button";
 import ThemeModeToggler from "@/components/mode-toggle";
 import "../styles/index.css";
@@ -58,7 +58,7 @@ function Root() {
                 <CurrentPage />
               </div>
               <div className="flex gap-2">
-                <RefreshButton />
+                {/* <RefreshButton /> */}
                 <ThemeModeToggler />
               </div>
             </header>

@@ -44,7 +44,7 @@ export function BooksDataTableToolbar<TData>({
       <div className="flex items-center gap-2">
         <DataTableExportPDF
           table={table}
-          filename="books_export"
+          filename={`books_export-${new Date().toISOString().slice(0, 10)}`}
           title="Books Report"
         />
         <DataTableViewOptions table={table} />

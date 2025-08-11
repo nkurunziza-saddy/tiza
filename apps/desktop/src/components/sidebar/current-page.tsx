@@ -18,12 +18,15 @@ export function CurrentPage() {
       const href = "/" + segments.slice(0, index + 1).join("/");
       const formattedSegment =
         segment.charAt(0).toUpperCase() + segment.slice(1);
-
       return (
         <Fragment key={segment.toString()}>
           <BreadcrumbItem key={href}>
             <BreadcrumbLink asChild>
-              <Link to={href}>{formattedSegment}</Link>
+              <Link to={href}>
+                {formattedSegment === "Lending-returns"
+                  ? "Lending & Returns"
+                  : formattedSegment}
+              </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           {segments.length !== index + 1 && <BreadcrumbSeparator />}

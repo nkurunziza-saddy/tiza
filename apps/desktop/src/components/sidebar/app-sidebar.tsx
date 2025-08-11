@@ -22,14 +22,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link to="/">
-                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <img
-                    height={400}
-                    width={400}
-                    alt="Logo"
-                    src={"/android-chrome-512x512.png"}
-                  />
-                </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className=" line-clamp-1 font-medium">
                     {schoolName}

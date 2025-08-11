@@ -13,20 +13,20 @@ import {
   Sun,
   Moon,
   // Palette,
-  // Sparkles,
-  // Zap,
-  // Flame,
-  // Droplets,
+  Sparkles,
+  Zap,
+  Flame,
+  Droplets,
 } from "lucide-react";
 
 const themes = [
   { name: "light", label: "Light", icon: Sun },
   { name: "dark", label: "Dark", icon: Moon },
-  // { name: "warm", label: "Warm Light", icon: Flame },
-  // { name: "cool", label: "Cool Light", icon: Droplets },
-  // { name: "deep-blue", label: "Deep Blue", icon: Sparkles },
-  // { name: "warm-dark", label: "Warm Dark", icon: Flame },
-  // { name: "purple-dark", label: "Purple Dark", icon: Zap },
+  { name: "warm", label: "Warm Light", icon: Flame },
+  { name: "cool", label: "Cool Light", icon: Droplets },
+  { name: "deep-blue", label: "Deep Blue", icon: Sparkles },
+  { name: "warm-dark", label: "Warm Dark", icon: Flame },
+  { name: "purple-dark", label: "Purple Dark", icon: Zap },
 ];
 
 export default function ThemeModeToggler() {
