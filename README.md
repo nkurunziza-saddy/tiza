@@ -1,6 +1,6 @@
-# luu
+# tiza
 
-luu is a mini library system that provides a web interface and a desktop application for managing library resources. It includes features like book management, user management, and lending functionalities.
+tiza is a mini library system that provides a web interface and a desktop application for managing library resources. It includes features like book management, user management, and lending functionalities.
 
 ## Contributions
 

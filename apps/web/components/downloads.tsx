@@ -34,7 +34,7 @@ export function Downloads() {
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-2xl font-medium text-foreground tracking-tight">
-            Download Luu
+            Download Tiza
           </h2>
           <p className="text-muted-foreground text-sm max-w-md mx-auto leading-relaxed">
             Free and open source. Choose your platform below.

@@ -36,7 +36,7 @@ export function Features() {
     },
     {
       icon: Zap,
-      title: "Fast",
+      title: "Fast & Offline",
       description: "Native performance with minimal resource usage.",
     },
     {

@@ -33,4 +33,4 @@ export const SecondaryLinks = [
     url: makeGmailLink("Help", "Hello, I need some help."),
   },
 ];
-export const schoolName = "Luu";
+export const schoolName = "Tiza";

@@ -7,16 +7,16 @@ export function Hero() {
       <div className="max-w-3xl mx-auto text-center space-y-10">
         <div className="space-y-6">
           <Badge variant="secondary" className="text-xs font-normal px-3 py-1">
-            Built with Rust
+            Built for schools
           </Badge>
 
           <div className="space-y-4">
             <h1 className="text-5xl md:text-7xl font-light tracking-tight text-foreground">
-              Luu
+              Tiza
             </h1>
             <div>
               <p className="text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
-                Minimal library management for schools.
+                Minimal library management.
               </p>
               <p className="text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
                 Simple, fast, reliable.

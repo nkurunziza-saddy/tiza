@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APP_DIR="$HOME/.local/share/luu"
+APP_DIR="$HOME/.local/share/tiza"
 DB_PATH="$APP_DIR/library.db"
 
 echo "Attempting to create and initialize the database"

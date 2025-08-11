@@ -8,7 +8,7 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <div className="flex items-center space-x-3">
             <h3 className="text-lg font-medium text-foreground tracking-tight">
-              Luu
+              Tiza
             </h3>
           </div>
 
@@ -30,7 +30,7 @@ export function Footer() {
 
         <div className="mt-8 pt-6 border-t text-center">
           <p className="text-muted-foreground text-xs">
-            © 2024 Luu. Free library management system.
+            © 2024 Tiza. Free library management system.
           </p>
         </div>
       </div>

@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "luu",
+  title: "tiza",
   description: "A mini library system",
 };
 
