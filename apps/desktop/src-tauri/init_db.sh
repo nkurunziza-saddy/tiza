@@ -1,16 +1,12 @@
 #!/bin/bash
 
+APP_DIR="$HOME/.local/share/luu"
+DB_PATH="$APP_DIR/library.db"
+
 echo "Attempting to create and initialize the database"
 
-# Create data directory if it doesn't exist
-if [ ! -d "data" ]; then
-    mkdir -p data
-fi
+mkdir -p "$APP_DIR"
 
-# Path to the database file
-DB_PATH="data/library.db"
-
-# Initialize the database by running the SQL from migrations
 echo "Running database migration..."
 sqlite3 "$DB_PATH" ".read migrations/20250731000000_initial.sql"
 
@@ -20,4 +16,4 @@ if [ $? -eq 0 ]; then
 else
     echo "Failed to initialize database"
     exit 1
-fi 
+fi

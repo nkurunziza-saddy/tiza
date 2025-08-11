@@ -1,3 +1,4 @@
+use tauri::Manager;
 use chrono::{DateTime, Utc};
 mod models;
 mod services;
@@ -192,12 +193,19 @@ async fn get_recent_activity(state: tauri::State<'_, sqlx::Pool<sqlx::Sqlite>>) 
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    let runtime = tokio::runtime::Runtime::new().expect("Failed to create Tokio runtime");
-    let db_pool = runtime.block_on(db::init_db()).expect("Failed to initialize database");
-
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .manage(db_pool)
+        .setup(|app| {
+            let app_handle = app.handle().clone();
+            let runtime = tokio::runtime::Runtime::new().expect("Failed to create Tokio runtime");
+            let db_pool = runtime.block_on(db::init_db(&app_handle))
+                .expect("Failed to initialize database");
+            
+            app.manage(db_pool);
+            println!("Database initialized successfully");
+            
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
             greet,
             my_custom_command,
