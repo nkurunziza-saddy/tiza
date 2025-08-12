@@ -128,7 +128,7 @@ export function Downloads() {
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap rede4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {platforms.map((platform, index) => (
             <Card key={index} className="transition-smooth hover:shadow-md">
               <CardHeader className="text-center pb-3">
