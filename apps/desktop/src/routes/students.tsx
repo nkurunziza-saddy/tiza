@@ -116,9 +116,9 @@ function StudentsPage() {
               <Badge
                 key={grade}
                 variant="outline"
-                className="text-sm py-2 px-4"
+                className="text-xs py-1.5 px-2"
               >
-                Grade {grade}: {count} students
+                Grade {grade}: {count}
               </Badge>
             ))}
         </div>

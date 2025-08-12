@@ -26,6 +26,7 @@ import { FormDialog } from "../form-dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Student } from "@/types/models";
 import { createStudent, updateStudent } from "@/utils/api";
+import { GRADES } from "@/utils/constants";
 
 export const studentSchema = z.object({
   name: z
@@ -87,7 +88,7 @@ export default function CreateStudent({ student }: { student?: Student }) {
     resolver: zodResolver(studentSchema),
     defaultValues: {
       name: student ? student.name : "",
-      grade: student ? student.grade : "6",
+      grade: student ? student.grade : "P6",
       phone_number: student ? student.phone_number ?? "" : "",
       student_id: student ? student.student_id : "",
     },
@@ -149,13 +150,11 @@ export default function CreateStudent({ student }: { student?: Student }) {
                       <SelectValue placeholder="Select student's grade" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="6">Grade 6</SelectItem>
-                      <SelectItem value="7">Grade 7</SelectItem>
-                      <SelectItem value="8">Grade 8</SelectItem>
-                      <SelectItem value="9">Grade 9</SelectItem>
-                      <SelectItem value="10">Grade 10</SelectItem>
-                      <SelectItem value="11">Grade 11</SelectItem>
-                      <SelectItem value="12">Grade 12</SelectItem>
+                      {GRADES.map((grade) => (
+                        <SelectItem value={grade.value}>
+                          {grade.label}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormControl>

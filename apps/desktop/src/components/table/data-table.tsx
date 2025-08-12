@@ -28,6 +28,7 @@ import { DefaultDataTableToolbar } from "@/components/table/data-table-toolbar";
 import { BooksDataTableToolbar } from "./books-data-table-toolbar";
 import { StudentsDataTableToolbar } from "./students-data-table-toolbar";
 import { LendingsDataTableToolbar } from "@/components/table/lent-data-table-toolbar";
+import { Separator } from "../ui/separator";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -103,9 +104,10 @@ export function DataTable<TData, TValue>({
     }
   }
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col rounded">
       {renderToolbar()}
-      <div className="rounded-md border duration-200 transition-all">
+      <Separator className="my-4" />
+      <div className="rounded overflow-hidden">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -156,6 +158,9 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
       <DataTablePagination table={table} />
+      <div className="text-center text-sm text-muted-foreground">
+        Showing {table.getRowModel().rows.length} of {data.length} items
+      </div>
     </div>
   );
 }

@@ -10,6 +10,7 @@ import { CreateStudentDialog } from "@/components/forms/create-student";
 import { DataTableSearch } from "./data-table-search";
 import { DataTableExportPDF } from "./data-table-export-pdf";
 import { ColumnMeta, DataTableDateRange } from "./data-table-date-range";
+import { GRADES } from "@/utils/constants";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -19,36 +20,7 @@ export function StudentsDataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
-  const studentGrades = [
-    {
-      value: "6",
-      label: "Grade 6",
-    },
-    {
-      value: "7",
-      label: "Grade 7",
-    },
-    {
-      value: "8",
-      label: "Grade 8",
-    },
-    {
-      value: "9",
-      label: "Grade 9",
-    },
-    {
-      value: "10",
-      label: "Grade 10",
-    },
-    {
-      value: "11",
-      label: "Grade 11",
-    },
-    {
-      value: "12",
-      label: "Grade 12",
-    },
-  ];
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center gap-2">
@@ -64,7 +36,7 @@ export function StudentsDataTableToolbar<TData>({
           <DataTableDashFilter
             column={table.getColumn("grade")}
             title="Grade"
-            options={studentGrades}
+            options={GRADES}
           />
         )}
         <div className="flex flex-wrap gap-4">
