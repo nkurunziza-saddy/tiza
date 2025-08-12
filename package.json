@@ -17,5 +17,23 @@
   "devDependencies": {
     "turbo": "^2.5.4"
   },
+  "keywords": [
+    "library",
+    "management",
+    "bibliotheque",
+    "books",
+    "schools",
+    "simple"
+  ],
+  "author": "Nkurunziza Saddy <saddynkurunzizaa@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nkurunziza-saddy/tiza.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nkurunziza-saddy/tiza/issues"
+  },
+  "homepage": "https://nkurunziza-saddy.github.io/tiza",
   "packageManager": "pnpm@10.13.1"
 }
