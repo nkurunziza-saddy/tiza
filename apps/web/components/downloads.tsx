@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Download, Monitor, Apple, Smartphone } from "lucide-react";
+import Link from "next/link";
 
 interface Asset {
   name: string;
@@ -143,15 +144,16 @@ export function Downloads() {
                 </p>
               </CardHeader>
 
-              <CardContent className="space-y-2 pt-0">
+              <CardContent className="flex flex-col gap-y-2 pt-0">
                 {platform.downloads.length > 0 ? (
                   platform.downloads.map((download, downloadIndex) => (
-                    <a key={downloadIndex} href={download.url} download>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="w-full justify-between text-xs h-8"
-                      >
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      asChild
+                      className="w-full justify-between text-xs h-8"
+                    >
+                      <Link key={downloadIndex} href={download.url} download>
                         <div className="flex items-center space-x-2">
                           <Download className="w-3 h-3" />
                           <span>{download.name}</span>
@@ -159,8 +161,8 @@ export function Downloads() {
                         <span className="text-muted-foreground text-xs">
                           {download.format} • {download.size}
                         </span>
-                      </Button>
-                    </a>
+                      </Link>
+                    </Button>
                   ))
                 ) : (
                   <p className="text-muted-foreground text-xs text-center">
