@@ -17,7 +17,7 @@ import {
   CloudMoon,
 } from "lucide-react";
 
-const themes = [
+export const THEMES = [
   { name: "light", label: "Light", icon: Sun },
   { name: "dark", label: "Dark", icon: Moon },
   { name: "warm", label: "Warm Light", icon: Flame },
@@ -25,8 +25,9 @@ const themes = [
   { name: "charcoal", label: "Charcoal", icon: Sparkles },
   { name: "ocean", label: "Ocean Blue", icon: Waves },
   { name: "twilight", label: "Twilight", icon: CloudMoon },
-];
+] as const;
 
+export type ThemeType = (typeof THEMES)[number]["name"];
 export default function ThemeModeToggler() {
   const { setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -36,7 +37,7 @@ export default function ThemeModeToggler() {
   if (!mounted) return null;
 
   const currentTheme =
-    themes.find((theme) => theme.name === resolvedTheme) || themes[0];
+    THEMES.find((theme) => theme.name === resolvedTheme) || THEMES[0];
   const CurrentIcon = currentTheme.icon;
 
   return (
@@ -52,7 +53,7 @@ export default function ThemeModeToggler() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {themes.map((theme) => {
+        {THEMES.map((theme) => {
           const Icon = theme.icon;
           return (
             <DropdownMenuItem

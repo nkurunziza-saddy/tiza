@@ -259,7 +259,6 @@ pub async fn import_data(app_handle: AppHandle) -> Result<RestoreResult, String>
 
 #[tauri::command]
 pub async fn refresh_app(app_handle: AppHandle) -> Result<(), String> {
-    // Emit an event to refresh the frontend
     app_handle
         .emit("refresh_data", ())
         .map_err(|e| e.to_string())?;

@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestRouteImport } from './routes/test'
 import { Route as StudentsRouteImport } from './routes/students'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as LendingReturnsRouteImport } from './routes/lending-returns'
 import { Route as BooksRouteImport } from './routes/books'
 import { Route as IndexRouteImport } from './routes/index'
@@ -23,6 +24,11 @@ const TestRoute = TestRouteImport.update({
 const StudentsRoute = StudentsRouteImport.update({
   id: '/students',
   path: '/students',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LendingReturnsRoute = LendingReturnsRouteImport.update({
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/books': typeof BooksRoute
   '/lending-returns': typeof LendingReturnsRoute
+  '/settings': typeof SettingsRoute
   '/students': typeof StudentsRoute
   '/test': typeof TestRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/books': typeof BooksRoute
   '/lending-returns': typeof LendingReturnsRoute
+  '/settings': typeof SettingsRoute
   '/students': typeof StudentsRoute
   '/test': typeof TestRoute
 }
@@ -60,21 +68,36 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/books': typeof BooksRoute
   '/lending-returns': typeof LendingReturnsRoute
+  '/settings': typeof SettingsRoute
   '/students': typeof StudentsRoute
   '/test': typeof TestRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/books' | '/lending-returns' | '/students' | '/test'
+  fullPaths:
+    | '/'
+    | '/books'
+    | '/lending-returns'
+    | '/settings'
+    | '/students'
+    | '/test'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/books' | '/lending-returns' | '/students' | '/test'
-  id: '__root__' | '/' | '/books' | '/lending-returns' | '/students' | '/test'
+  to: '/' | '/books' | '/lending-returns' | '/settings' | '/students' | '/test'
+  id:
+    | '__root__'
+    | '/'
+    | '/books'
+    | '/lending-returns'
+    | '/settings'
+    | '/students'
+    | '/test'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BooksRoute: typeof BooksRoute
   LendingReturnsRoute: typeof LendingReturnsRoute
+  SettingsRoute: typeof SettingsRoute
   StudentsRoute: typeof StudentsRoute
   TestRoute: typeof TestRoute
 }
@@ -93,6 +116,13 @@ declare module '@tanstack/react-router' {
       path: '/students'
       fullPath: '/students'
       preLoaderRoute: typeof StudentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lending-returns': {
@@ -123,6 +153,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BooksRoute: BooksRoute,
   LendingReturnsRoute: LendingReturnsRoute,
+  SettingsRoute: SettingsRoute,
   StudentsRoute: StudentsRoute,
   TestRoute: TestRoute,
 }
