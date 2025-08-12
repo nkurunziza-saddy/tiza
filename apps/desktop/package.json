@@ -1,5 +1,5 @@
 {
-  "name": "tiza",
+  "name": "desktop",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -9,6 +9,8 @@
     "preview": "vite preview",
     "db:init": "cd ./src-tauri && ./init_db.sh",
     "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
     "clean": "rm -rf dist src-tauri/target"
   },
   "dependencies": {

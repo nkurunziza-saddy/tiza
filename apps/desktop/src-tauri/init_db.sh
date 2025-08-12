@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APP_DIR="$HOME/.local/share/tiza"
+APP_DIR="$HOME/.local/share/tiza.com"
 DB_PATH="$APP_DIR/library.db"
 
 echo "Attempting to create and initialize the database"

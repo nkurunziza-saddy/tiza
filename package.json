@@ -11,7 +11,9 @@
     "check-types": "turbo check-types",
     "dev:native": "turbo -F native dev",
     "dev:web": "turbo -F web dev",
-    "dev:server": "turbo -F server dev"
+    "build:desktop": "turbo -F desktop build && turbo -F desktop tauri:build",
+    "dev:desktop": "turbo -F desktop tauri:dev",
+    "tauri:build": "turbo -F desktop tauri:build"
   },
   "dependencies": {},
   "devDependencies": {

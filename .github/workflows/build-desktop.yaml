@@ -19,18 +19,22 @@ jobs:
             args: "--target aarch64-apple-darwin"
             arch: "arm64"
             name: "macOS-arm64"
+            target: "aarch64-apple-darwin"
           - platform: "macos-latest"
             args: "--target x86_64-apple-darwin"
             arch: "x64"
             name: "macOS-x64"
+            target: "x86_64-apple-darwin"
           - platform: "ubuntu-20.04"
             args: ""
             arch: "x64"
             name: "Linux-x64"
+            target: ""
           - platform: "windows-latest"
             args: ""
             arch: "x64"
             name: "Windows-x64"
+            target: ""
 
     runs-on: ${{ matrix.platform }}
 
@@ -47,7 +51,7 @@ jobs:
       - name: Rust setup
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+          targets: ${{ matrix.target }}
 
       - name: Rust cache
         uses: swatinem/rust-cache@v2
@@ -67,8 +71,21 @@ jobs:
       - name: Install frontend dependencies
         run: pnpm install
 
+      - name: Build frontend
+        working-directory: apps/desktop
+        run: pnpm run build
+
       - name: Build the app
-        run: pnpm --filter desktop tauri build ${{ matrix.args }}
+        working-directory: apps/desktop
+        run: pnpm tauri build ${{ matrix.args }}
+
+      # Debug step to see what files were actually created
+      - name: List build artifacts
+        shell: bash
+        run: |
+          echo "Listing all files in target directory:"
+          find apps/desktop/src-tauri/target -name "bundle" -type d 2>/dev/null || echo "No bundle directories found"
+          find apps/desktop/src-tauri/target -type f \( -name "*.deb" -o -name "*.rpm" -o -name "*.AppImage" -o -name "*.dmg" -o -name "*.msi" -o -name "*.exe" -o -name "*.app" \) 2>/dev/null || echo "No bundle files found"
 
       - name: Upload development artifacts
         if: ${{ !startsWith(github.ref, 'refs/tags/') }}
@@ -76,25 +93,16 @@ jobs:
         with:
           name: tiza-${{ matrix.name }}
           path: |
-            apps/desktop/src-tauri/target/release/bundle/
-            apps/desktop/src-tauri/target/*/release/bundle/
+            apps/desktop/src-tauri/target/release/bundle/**/*
+            apps/desktop/src-tauri/target/*/release/bundle/**/*
+          if-no-files-found: warn
 
       - name: Upload release assets (Tagged releases only)
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            apps/desktop/src-tauri/target/release/bundle/*.deb
-            apps/desktop/src-tauri/target/release/bundle/*.rpm
-            apps/desktop/src-tauri/target/release/bundle/*.AppImage
-            apps/desktop/src-tauri/target/release/bundle/*.dmg
-            apps/desktop/src-tauri/target/release/bundle/*.msi
-            apps/desktop/src-tauri/target/release/bundle/*.exe
-            apps/desktop/src-tauri/target/*/release/bundle/*.deb
-            apps/desktop/src-tauri/target/*/release/bundle/*.rpm
-            apps/desktop/src-tauri/target/*/release/bundle/*.AppImage
-            apps/desktop/src-tauri/target/*/release/bundle/*.dmg
-            apps/desktop/src-tauri/target/*/release/bundle/*.msi
-            apps/desktop/src-tauri/target/*/release/bundle/*.exe
+            apps/desktop/src-tauri/target/release/bundle/**/*
+            apps/desktop/src-tauri/target/*/release/bundle/**/*
           draft: false
           prerelease: false
