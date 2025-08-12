@@ -7,11 +7,9 @@ import {
   SidebarInset,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Separator } from "@/components/ui/separator";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "next-themes";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
-import { CurrentPage } from "@/components/sidebar/current-page";
 import ThemeModeToggler from "@/components/mode-toggle";
 import "../styles/index.css";
 import { useMenuHandler } from "@/utils/menu-api";

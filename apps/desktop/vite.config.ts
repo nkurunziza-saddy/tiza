@@ -31,6 +31,12 @@ export default defineConfig(async () => ({
       ignored: ["**/src-tauri/**"],
     },
   },
+  output: {
+    manualChunks: {
+      pdf: ["jspdf", "jspdf-autotable"],
+      capture: ["html2canvas"],
+    },
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

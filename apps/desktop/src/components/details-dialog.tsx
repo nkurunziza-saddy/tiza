@@ -100,11 +100,11 @@ export function DetailsDialog({
                   </h4>
                   <Badge
                     variant={
-                      lending.status === "returned" ? "default" : "secondary"
+                      lending.status === "Returned" ? "default" : "secondary"
                     }
                     className="text-xs"
                   >
-                    {lending.status === "returned" ? (
+                    {lending.status === "Returned" ? (
                       <CheckCircle className="w-3 h-3 mr-1" />
                     ) : (
                       <Clock className="w-3 h-3 mr-1" />
@@ -172,7 +172,7 @@ export function DetailsDialog({
                 <CardDescription>by {book.author}</CardDescription>
               </div>
               <Badge
-                variant={book.status === "available" ? "default" : "secondary"}
+                variant={book.status === "Available" ? "default" : "secondary"}
               >
                 {book.status}
               </Badge>
@@ -230,7 +230,7 @@ export function DetailsDialog({
                 </CardDescription>
               </div>
               <Badge
-                variant={student.status === "active" ? "default" : "secondary"}
+                variant={student.status === "Active" ? "default" : "secondary"}
               >
                 {student.status}
               </Badge>
