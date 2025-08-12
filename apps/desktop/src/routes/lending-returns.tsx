@@ -29,8 +29,8 @@ function LendingsPage() {
   const stats = lendings
     ? {
         totalLendings: lendings.length,
-        activeLendings: lendings.filter((l) => l.status === "lent").length,
-        returned: lendings.filter((l) => l.status === "returned").length,
+        activeLendings: lendings.filter((l) => l.status === "Lent").length,
+        returned: lendings.filter((l) => l.status === "Returned").length,
         overdue: overdueBooks?.length ?? 0,
       }
     : null;

@@ -5,7 +5,7 @@ export interface Book {
   quantity: number;
   isbn: string;
   category: string;
-  status: "available" | "unavailable";
+  status: "Available" | "Unavailable";
   created_at: string;
 }
 
@@ -17,7 +17,7 @@ export interface Student {
   grade: string;
   phone_number: string | null;
   student_id: string;
-  status: "active" | "inactive";
+  status: "Active" | "Inactive";
   created_at: string;
 }
 
@@ -28,7 +28,7 @@ export interface Lending {
   lent_at: string;
   due_date: string;
   returned_at: string | null;
-  status: "lent" | "returned";
+  status: "Lent" | "Returned";
   book_title: string;
   book_author: string;
   student_name: string;

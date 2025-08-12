@@ -8,7 +8,6 @@ import { AlertTriangle, BookOpen, Clock } from "lucide-react";
 import { PageHeader, PageLayout } from "@/components/page-layout";
 import { StudentsPageSkeleton } from "@/components/skeletons/students-page";
 import { StatCard } from "@/components/dashboard/stat";
-import { stat } from "fs";
 
 export const Route = createFileRoute("/students")({
   component: StudentsPage,
@@ -37,7 +36,7 @@ function StudentsPage() {
     ? {
         totalLendings: students.length,
         activeLendings:
-          lendings?.filter((l) => l.status === "lent").length ?? 0,
+          lendings?.filter((l) => l.status === "Returned").length ?? 0,
         overdue: overdueBooks?.length ?? 0,
       }
     : null;
@@ -45,6 +44,12 @@ function StudentsPage() {
     stats?.activeLendings && stats.activeLendings > 0
       ? (stats.activeLendings / stats.totalLendings) * 100
       : 0;
+  console.log(
+    "Percentage of active lendings:",
+    percentageLent,
+    stats?.activeLendings,
+    stats?.totalLendings
+  );
 
   const gradeDistribution = students
     ? students.reduce((acc, student) => {

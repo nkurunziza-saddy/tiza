@@ -41,7 +41,7 @@ export interface RecentActivity {
   book_title: string;
   author: string;
   category: string;
-  activity_type: "borrowed" | "returned";
+  activity_type: "Borrowed" | "Returned";
   due_date?: string;
   created_at: string;
 }

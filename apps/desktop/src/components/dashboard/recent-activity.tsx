@@ -18,6 +18,7 @@ export function RecentActivity() {
     queryKey: ["recentActivity"],
     queryFn: getRecentActivity,
   });
+  console.log("Activities", activities);
 
   if (isLoading) return <LoadingCard title="Recent Activity" />;
   if (!activities?.length) return null;
@@ -70,14 +71,14 @@ function ActivityItem({ activity }: { activity: RecentActivityInterface }) {
         </div>
 
         <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <div className="flex items-center gap-3">
-            <span>ID: {activity.student_id}</span>
-            {activity.category && (
-              <Badge variant="outline" className="text-xs">
-                {activity.category}
-              </Badge>
-            )}
-          </div>
+          {/* <div className="flex items-center gap-3"> */}
+          {/* <span>ID: {activity.student_id}</span> */}
+          {activity.category && (
+            <Badge variant="outline" className="text-xs">
+              {activity.category}
+            </Badge>
+          )}
+          {/* </div> */}
           <time>{new Date(activity.created_at).toLocaleString()}</time>
         </div>
 

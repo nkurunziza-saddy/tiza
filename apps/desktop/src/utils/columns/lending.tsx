@@ -44,7 +44,7 @@ export const LendingColumn: ColumnDef<Lending>[] = [
         return null;
       }
       const isOverdue =
-        row.original.status === "lent" && row.original.due_date
+        row.original.status === "Lent" && row.original.due_date
           ? new Date(row.original.due_date) < new Date()
           : false;
       if (isOverdue && status.value === "lent") {
@@ -85,6 +85,9 @@ export const LendingColumn: ColumnDef<Lending>[] = [
       const date = row.original.lent_at ? new Date(row.original.lent_at) : null;
       return date ? format(date, "MMM dd, yyyy") : "N/A";
     },
+    meta: {
+      filterVariant: "date-range",
+    },
   },
   {
     accessorKey: "due_date",
@@ -107,7 +110,7 @@ export const LendingColumn: ColumnDef<Lending>[] = [
       const date = row.original.returned_at
         ? new Date(row.original.returned_at)
         : null;
-      return date ? format(date, "MMM dd, yyyy") : "N/A";
+      return date ? format(date, "MMM dd, yyyy") : "Not Returned";
     },
   },
   {

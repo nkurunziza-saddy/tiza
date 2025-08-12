@@ -83,6 +83,9 @@ export const StudentColumn: ColumnDef<Student>[] = [
         : null;
       return date ? format(date, "MMM dd, yyyy") : "N/A";
     },
+    meta: {
+      filterVariant: "date-range",
+    },
   },
   {
     id: "actions",

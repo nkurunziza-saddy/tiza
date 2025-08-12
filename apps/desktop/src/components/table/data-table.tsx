@@ -62,6 +62,21 @@ export function DataTable<TData, TValue>({
         pageSize: 25,
       },
     },
+    filterFns: {
+      dateRange: (row, columnId, value: [Date, Date]) => {
+        const cellValue = row.getValue(columnId) as string;
+        const date = cellValue ? new Date(cellValue) : null;
+
+        if (!date || !value?.[0]) return true;
+
+        const [start, end] = value;
+        if (start && end) {
+          return date >= start && date <= end;
+        }
+
+        return date >= start;
+      },
+    },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,

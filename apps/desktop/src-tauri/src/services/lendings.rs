@@ -118,13 +118,26 @@ pub async fn create_lending(
     student_id: &str,
     due_date: DateTime<Utc>,
 ) -> Result<(), sqlx::Error> {
+    let existing = sqlx::query_scalar!(
+        r#"
+        SELECT COUNT(*) as count
+        FROM lent
+        WHERE student_id = ? AND status = 'lent'
+        "#,
+        student_id
+    )
+    .fetch_one(pool)
+    .await?;
+
+    if existing > 0 {
+        return Err(sqlx::Error::RowNotFound);
+    }
+
     let id = Uuid::new_v4().to_string();
     let lent_at = Utc::now();
 
-    // Start a transaction
     let mut tx = pool.begin().await?;
 
-    // Insert the lending record
     sqlx::query!(
         r#"
         INSERT INTO lent (id, book_id, student_id, lent_at, due_date, status)
@@ -140,7 +153,6 @@ pub async fn create_lending(
     .execute(&mut *tx)
     .await?;
 
-    // Update book status
     sqlx::query!(
         r#"
         UPDATE books
@@ -153,7 +165,6 @@ pub async fn create_lending(
     .execute(&mut *tx)
     .await?;
 
-    // Commit the transaction
     tx.commit().await?;
 
     Ok(())
@@ -192,10 +203,8 @@ pub async fn return_lending(
 ) -> Result<(), sqlx::Error> {
     let returned_at = Utc::now();
 
-    // Start a transaction
     let mut tx = pool.begin().await?;
 
-    // Get the lending record
     let lending = sqlx::query!(
         r#"SELECT book_id FROM lent WHERE id = ?"#,
         id
@@ -203,7 +212,6 @@ pub async fn return_lending(
     .fetch_one(&mut *tx)
     .await?;
 
-    // Update the lending record
     sqlx::query!(
         r#"
         UPDATE lent
@@ -217,7 +225,6 @@ pub async fn return_lending(
     .execute(&mut *tx)
     .await?;
 
-    // Update book status
     sqlx::query!(
         r#"
         UPDATE books
@@ -230,7 +237,6 @@ pub async fn return_lending(
     .execute(&mut *tx)
     .await?;
 
-    // Commit the transaction
     tx.commit().await?;
 
     Ok(())

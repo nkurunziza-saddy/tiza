@@ -3,7 +3,6 @@ import { getAllBooks } from "@/utils/api";
 import { BookColumn } from "@/utils/columns";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Badge } from "@/components/ui/badge";
 import { BookOpen, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { PageHeader, PageLayout } from "@/components/page-layout";
 import { StatCard } from "@/components/dashboard/stat";
@@ -26,8 +25,8 @@ function BooksPage() {
   const stats = books
     ? {
         totalBooks: books.length,
-        available: books.filter((b) => b.status === "available").length,
-        unavailable: books.filter((b) => b.status === "unavailable").length,
+        available: books.filter((b) => b.status === "Available").length,
+        unavailable: books.filter((b) => b.status === "Unavailable").length,
       }
     : null;
 
@@ -80,21 +79,6 @@ function BooksPage() {
           />
         </div>
       )}
-
-      <div className="flex flex-wrap gap-3">
-        <Badge variant="outline" className="text-sm py-2 px-4">
-          Fiction: {books?.filter((b) => b.category === "Fiction").length || 0}
-        </Badge>
-        <Badge variant="outline" className="text-sm py-2 px-4">
-          Science: {books?.filter((b) => b.category === "Science").length || 0}
-        </Badge>
-        <Badge variant="outline" className="text-sm py-2 px-4">
-          History: {books?.filter((b) => b.category === "History").length || 0}
-        </Badge>
-        <Badge variant="outline" className="text-sm py-2 px-4">
-          Arts: {books?.filter((b) => b.category === "Arts").length || 0}
-        </Badge>
-      </div>
 
       <DataTable columns={BookColumn} data={books ?? []} tag="books" />
     </PageLayout>

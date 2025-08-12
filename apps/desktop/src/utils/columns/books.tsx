@@ -93,6 +93,9 @@ export const BookColumn: ColumnDef<Book>[] = [
         : null;
       return date ? format(date, "MMM dd, yyyy") : null;
     },
+    meta: {
+      filterVariant: "date-range",
+    },
   },
   {
     id: "actions",

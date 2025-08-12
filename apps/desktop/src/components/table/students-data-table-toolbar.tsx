@@ -9,6 +9,7 @@ import { studentStatuses } from "@/utils/columns/students";
 import { CreateStudentDialog } from "@/components/forms/create-student";
 import { DataTableSearch } from "./data-table-search";
 import { DataTableExportPDF } from "./data-table-export-pdf";
+import { ColumnMeta, DataTableDateRange } from "./data-table-date-range";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -66,6 +67,23 @@ export function StudentsDataTableToolbar<TData>({
             options={studentGrades}
           />
         )}
+        <div className="flex flex-wrap gap-4">
+          {table.getHeaderGroups().map((headerGroup) =>
+            headerGroup.headers.map((header) => {
+              const column = header.column;
+              const filterVariant = (column.columnDef.meta as ColumnMeta)
+                ?.filterVariant;
+              if (filterVariant === "date-range") {
+                return (
+                  <div key={header.id} className="w-[250px]">
+                    <DataTableDateRange column={column} />
+                  </div>
+                );
+              }
+              return null;
+            })
+          )}
+        </div>
         {isFiltered && (
           <Button
             variant="ghost"

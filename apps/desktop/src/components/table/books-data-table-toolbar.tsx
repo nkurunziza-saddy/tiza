@@ -9,6 +9,7 @@ import { bookStatuses } from "@/utils/columns/books";
 import { CreateBookDialog } from "@/components/forms/create-book";
 import { DataTableSearch } from "@/components/table/data-table-search";
 import { DataTableExportPDF } from "@/components/table/data-table-export-pdf";
+import { ColumnMeta, DataTableDateRange } from "./data-table-date-range";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -30,6 +31,23 @@ export function BooksDataTableToolbar<TData>({
             options={bookStatuses}
           />
         )}
+        <div className="flex flex-wrap gap-4">
+          {table.getHeaderGroups().map((headerGroup) =>
+            headerGroup.headers.map((header) => {
+              const column = header.column;
+              const filterVariant = (column.columnDef.meta as ColumnMeta)
+                ?.filterVariant;
+              if (filterVariant === "date-range") {
+                return (
+                  <div key={header.id} className="w-[250px]">
+                    <DataTableDateRange column={column} />
+                  </div>
+                );
+              }
+              return null;
+            })
+          )}
+        </div>
         {isFiltered && (
           <Button
             variant="ghost"
