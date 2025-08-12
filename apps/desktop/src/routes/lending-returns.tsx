@@ -41,19 +41,14 @@ function LendingsPage() {
 
   if (error) {
     return (
-      <PageLayout>
-        <div className="flex items-center justify-center py-20">
-          <div className="text-center space-y-4">
-            <AlertTriangle className="size-12 text-destructive mx-auto" />
-            <h2 className="text-xl font-semibold">
-              Failed to load lending data
-            </h2>
-            <p className="text-muted-foreground">
-              Please try refreshing the page
-            </p>
-          </div>
+      <div className="min-h-[80vh] flex items-center justify-center">
+        <div className="text-center space-y-1">
+          <h2 className="font-medium">Failed to load dashboard</h2>
+          <p className="text-sm not-[]:text-muted-foreground">
+            Please try refreshing the page
+          </p>
         </div>
-      </PageLayout>
+      </div>
     );
   }
 

@@ -56,7 +56,7 @@ export const studentSchema = z.object({
       }
     )
     .optional(),
-  status: z.enum(["active", "inactive"]).default("active"),
+  status: z.enum(["Active", "Inactive"]).default("Active"),
   created_at: z.string().optional(),
 });
 

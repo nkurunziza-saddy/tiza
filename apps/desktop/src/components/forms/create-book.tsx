@@ -34,7 +34,7 @@ const bookSchema = z.object({
     .min(0, { message: "Quantity must be zero or greater." }),
   isbn: z.string().min(1, { message: "Please enter the ISBN." }),
   category: z.string().min(1, { message: "Please select a category." }),
-  status: z.enum(["available", "unavailable"]).default("available"),
+  status: z.enum(["Available", "Unavailable"]).default("Available"),
 });
 
 const categories = [

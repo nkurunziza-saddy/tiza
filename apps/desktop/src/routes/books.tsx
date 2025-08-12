@@ -3,7 +3,7 @@ import { getAllBooks } from "@/utils/api";
 import { BookColumn } from "@/utils/columns";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { BookOpen, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
+import { BookOpen, CheckCircle, XCircle } from "lucide-react";
 import { PageHeader, PageLayout } from "@/components/page-layout";
 import { StatCard } from "@/components/dashboard/stat";
 import { BooksPageSkeleton } from "@/components/skeletons/books-page";
@@ -36,17 +36,14 @@ function BooksPage() {
 
   if (error) {
     return (
-      <PageLayout>
-        <div className="flex items-center justify-center py-20">
-          <div className="text-center space-y-4">
-            <AlertTriangle className="size-12 text-destructive mx-auto" />
-            <h2 className="text-xl font-semibold">Failed to load books data</h2>
-            <p className="text-muted-foreground">
-              Please try refreshing the page
-            </p>
-          </div>
+      <div className="min-h-[80vh] flex items-center justify-center">
+        <div className="text-center space-y-1">
+          <h2 className="font-medium">Failed to load dashboard</h2>
+          <p className="text-sm not-[]:text-muted-foreground">
+            Please try refreshing the page
+          </p>
         </div>
-      </PageLayout>
+      </div>
     );
   }
 

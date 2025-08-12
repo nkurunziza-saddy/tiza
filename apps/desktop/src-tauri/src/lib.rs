@@ -3,6 +3,8 @@ use chrono::{DateTime, Utc};
 mod models;
 mod services;
 mod db;
+mod menu;
+use menu::{create_menu, handle_menu_event};
 
 #[tauri::command]
 fn greet(name: &str) -> String {
@@ -204,6 +206,8 @@ pub fn run() {
             app.manage(db_pool);
             println!("Database initialized successfully");
             
+           
+
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![

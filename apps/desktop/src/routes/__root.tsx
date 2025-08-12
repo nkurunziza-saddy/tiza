@@ -14,12 +14,14 @@ import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { CurrentPage } from "@/components/sidebar/current-page";
 import ThemeModeToggler from "@/components/mode-toggle";
 import "../styles/index.css";
+import { useMenuHandler } from "@/utils/menu-api";
 
 export const Route = createRootRoute({
   component: Root,
 });
 
 function Root() {
+  useMenuHandler();
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
