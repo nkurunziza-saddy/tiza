@@ -1,6 +1,6 @@
-use sqlx::{Pool, Sqlite};
-use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
+use sqlx::{Pool, Sqlite};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct DashboardStats {
@@ -54,35 +54,28 @@ pub struct RecentActivity {
 }
 
 pub async fn get_dashboard_stats(pool: &Pool<Sqlite>) -> Result<DashboardStats, sqlx::Error> {
-    let total_students: i64 = sqlx::query_scalar!(
-        "SELECT COUNT(*) FROM students"
-    )
-    .fetch_one(pool)
-    .await?
-    .into();
+    let total_students: i64 = sqlx::query_scalar!("SELECT COUNT(*) FROM students")
+        .fetch_one(pool)
+        .await?
+        .into();
 
-    let in_library_books: i64 = sqlx::query_scalar!(
-        "SELECT SUM(quantity) FROM books"
-    )
-    .fetch_one(pool)
-    .await?
-    .unwrap_or(0)
-    .into();
+    let in_library_books: i64 = sqlx::query_scalar!("SELECT SUM(quantity) FROM books")
+        .fetch_one(pool)
+        .await?
+        .unwrap_or(0)
+        .into();
 
-    let available_books: i64 = sqlx::query_scalar!(
-        "SELECT SUM(quantity) FROM books WHERE status = 'available'"
-    )
-    .fetch_one(pool)
-    .await?
-    .unwrap_or(0)
-    .into();
+    let available_books: i64 =
+        sqlx::query_scalar!("SELECT SUM(quantity) FROM books WHERE status = 'available'")
+            .fetch_one(pool)
+            .await?
+            .unwrap_or(0)
+            .into();
 
-    let books_on_loan: i64 = sqlx::query_scalar!(
-        "SELECT COUNT(*) FROM lent WHERE status = 'lent'"
-    )
-    .fetch_one(pool)
-    .await?
-    .into();
+    let books_on_loan: i64 = sqlx::query_scalar!("SELECT COUNT(*) FROM lent WHERE status = 'lent'")
+        .fetch_one(pool)
+        .await?
+        .into();
     let total_books = in_library_books + books_on_loan;
     let overdue_books: i64 = sqlx::query_scalar!(
         "SELECT COUNT(*) FROM lent WHERE status = 'lent' AND due_date < CURRENT_TIMESTAMP"
@@ -132,7 +125,6 @@ pub async fn get_dashboard_stats(pool: &Pool<Sqlite>) -> Result<DashboardStats, 
         popular_categories,
     })
 }
-
 
 pub async fn get_popular_books(pool: &Pool<Sqlite>) -> Result<Vec<PopularBook>, sqlx::Error> {
     sqlx::query_as!(

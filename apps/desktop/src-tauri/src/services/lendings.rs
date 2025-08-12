@@ -1,7 +1,7 @@
-use sqlx::{Pool, Sqlite};
 use crate::models::{LendingStatus, LendingWithDetails};
-use uuid::Uuid;
 use chrono::{DateTime, Utc};
+use sqlx::{Pool, Sqlite};
+use uuid::Uuid;
 
 pub async fn get_all_lendings(pool: &Pool<Sqlite>) -> Result<Vec<LendingWithDetails>, sqlx::Error> {
     sqlx::query_as!(
@@ -29,7 +29,10 @@ pub async fn get_all_lendings(pool: &Pool<Sqlite>) -> Result<Vec<LendingWithDeta
     .await
 }
 
-pub async fn get_lending_by_id(pool: &Pool<Sqlite>, id: &str) -> Result<Option<LendingWithDetails>, sqlx::Error> {
+pub async fn get_lending_by_id(
+    pool: &Pool<Sqlite>,
+    id: &str,
+) -> Result<Option<LendingWithDetails>, sqlx::Error> {
     sqlx::query_as!(
         LendingWithDetails,
         r#"
@@ -56,7 +59,10 @@ pub async fn get_lending_by_id(pool: &Pool<Sqlite>, id: &str) -> Result<Option<L
     .await
 }
 
-pub async fn get_lending_records_by_book_id(pool: &Pool<Sqlite>, id: &str) -> Result<Vec<LendingWithDetails>, sqlx::Error> {
+pub async fn get_lending_records_by_book_id(
+    pool: &Pool<Sqlite>,
+    id: &str,
+) -> Result<Vec<LendingWithDetails>, sqlx::Error> {
     sqlx::query_as!(
         LendingWithDetails,
         r#"
@@ -84,7 +90,10 @@ pub async fn get_lending_records_by_book_id(pool: &Pool<Sqlite>, id: &str) -> Re
     .await
 }
 
-pub async fn get_lending_records_by_student_id(pool: &Pool<Sqlite>, id: &str) -> Result<Vec<LendingWithDetails>, sqlx::Error> {
+pub async fn get_lending_records_by_student_id(
+    pool: &Pool<Sqlite>,
+    id: &str,
+) -> Result<Vec<LendingWithDetails>, sqlx::Error> {
     sqlx::query_as!(
         LendingWithDetails,
         r#"
@@ -178,7 +187,6 @@ pub async fn update_lending(
     due_date: DateTime<Utc>,
     returned_at: DateTime<Utc>,
 ) -> Result<(), sqlx::Error> {
-
     sqlx::query!(
         r#"
         UPDATE lent
@@ -197,20 +205,14 @@ pub async fn update_lending(
     Ok(())
 }
 
-pub async fn return_lending(
-    pool: &Pool<Sqlite>,
-    id: &str,
-) -> Result<(), sqlx::Error> {
+pub async fn return_lending(pool: &Pool<Sqlite>, id: &str) -> Result<(), sqlx::Error> {
     let returned_at = Utc::now();
 
     let mut tx = pool.begin().await?;
 
-    let lending = sqlx::query!(
-        r#"SELECT book_id FROM lent WHERE id = ?"#,
-        id
-    )
-    .fetch_one(&mut *tx)
-    .await?;
+    let lending = sqlx::query!(r#"SELECT book_id FROM lent WHERE id = ?"#, id)
+        .fetch_one(&mut *tx)
+        .await?;
 
     sqlx::query!(
         r#"
@@ -243,12 +245,9 @@ pub async fn return_lending(
 }
 
 pub async fn delete_lending(pool: &Pool<Sqlite>, id: &str) -> Result<(), sqlx::Error> {
-    sqlx::query!(
-        r#"DELETE FROM lent WHERE id = ?"#,
-        id
-    )
-    .execute(pool)
-    .await?;
-    
+    sqlx::query!(r#"DELETE FROM lent WHERE id = ?"#, id)
+        .execute(pool)
+        .await?;
+
     Ok(())
 }

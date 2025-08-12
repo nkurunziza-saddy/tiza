@@ -1,7 +1,7 @@
-use sqlx::{Pool, Sqlite};
 use crate::models::{Book, BookStatus};
-use uuid::Uuid;
 use chrono::Utc;
+use sqlx::{Pool, Sqlite};
+use uuid::Uuid;
 
 pub async fn get_all_books(pool: &Pool<Sqlite>) -> Result<Vec<Book>, sqlx::Error> {
     sqlx::query_as!(
@@ -56,7 +56,7 @@ pub async fn create_book(
 ) -> Result<(), sqlx::Error> {
     let id = Uuid::new_v4().to_string();
     let created_at = Utc::now();
-    
+
     sqlx::query!(
         r#"
         INSERT INTO books (id, title, author, quantity, isbn, category, status, created_at)
@@ -73,7 +73,7 @@ pub async fn create_book(
     )
     .execute(pool)
     .await?;
-    
+
     Ok(())
 }
 
@@ -88,7 +88,7 @@ pub async fn update_book(
     status: BookStatus,
 ) -> Result<(), sqlx::Error> {
     let status_str = status.to_string();
-    
+
     sqlx::query!(
         r#"
         UPDATE books 
@@ -105,17 +105,14 @@ pub async fn update_book(
     )
     .execute(pool)
     .await?;
-    
+
     Ok(())
 }
 
 pub async fn delete_book(pool: &Pool<Sqlite>, id: &str) -> Result<(), sqlx::Error> {
-    sqlx::query!(
-        r#"DELETE FROM books WHERE id = ?"#,
-        id
-    )
-    .execute(pool)
-    .await?;
-    
+    sqlx::query!(r#"DELETE FROM books WHERE id = ?"#, id)
+        .execute(pool)
+        .await?;
+
     Ok(())
 }

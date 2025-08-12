@@ -1,7 +1,7 @@
-use sqlx::{Pool, Sqlite};
 use crate::models::{Student, StudentStatus};
-use uuid::Uuid;
 use chrono::Utc;
+use sqlx::{Pool, Sqlite};
+use uuid::Uuid;
 
 pub async fn get_all_students(pool: &Pool<Sqlite>) -> Result<Vec<Student>, sqlx::Error> {
     sqlx::query_as!(
@@ -23,7 +23,10 @@ pub async fn get_all_students(pool: &Pool<Sqlite>) -> Result<Vec<Student>, sqlx:
     .await
 }
 
-pub async fn get_student_by_id(pool: &Pool<Sqlite>, id: &str) -> Result<Option<Student>, sqlx::Error> {
+pub async fn get_student_by_id(
+    pool: &Pool<Sqlite>,
+    id: &str,
+) -> Result<Option<Student>, sqlx::Error> {
     sqlx::query_as!(
         Student,
         r#"
@@ -82,7 +85,7 @@ pub async fn update_student(
     status: StudentStatus,
 ) -> Result<(), sqlx::Error> {
     let status_str = status.to_string();
-    
+
     sqlx::query!(
         r#"
         UPDATE students
@@ -103,12 +106,9 @@ pub async fn update_student(
 }
 
 pub async fn delete_student(pool: &Pool<Sqlite>, id: &str) -> Result<(), sqlx::Error> {
-    sqlx::query!(
-        r#"DELETE FROM students WHERE id = ?"#,
-        id
-    )
-    .execute(pool)
-    .await?;
+    sqlx::query!(r#"DELETE FROM students WHERE id = ?"#, id)
+        .execute(pool)
+        .await?;
 
     Ok(())
 }

@@ -7,193 +7,153 @@ import {
 } from "@tauri-apps/api/menu";
 import { schoolName } from "./constants";
 
+// Menu action types for better type safety
+export type MenuAction =
+  | "new"
+  | "import"
+  | "export"
+  | "refresh"
+  | "backup"
+  | "restore"
+  | "settings"
+  | "about"
+  | "help"
+  | "shortcuts"
+  | "contact";
+
+export type NavigationAction = "dashboard" | "books" | "students" | "lendings";
+
+// Helper function to create menu items with consistent event dispatching
+const createMenuItem = (id: string, text: string, action: MenuAction) =>
+  MenuItem.new({
+    id,
+    text,
+    accelerator: getAccelerator(id),
+    action: () => {
+      window.dispatchEvent(new CustomEvent("menu_action", { detail: action }));
+    },
+  });
+
+const createNavMenuItem = (id: string, text: string, route: NavigationAction) =>
+  MenuItem.new({
+    id,
+    text,
+    accelerator: getAccelerator(id),
+    action: () => {
+      window.dispatchEvent(new CustomEvent("navigate", { detail: route }));
+    },
+  });
+
+// Keyboard shortcuts mapping
+function getAccelerator(id: string): string | undefined {
+  const shortcuts: Record<string, string> = {
+    new: "CmdOrCtrl+N",
+    import: "CmdOrCtrl+I",
+    export: "CmdOrCtrl+E",
+    refresh: "F5",
+    dashboard: "CmdOrCtrl+D",
+    books: "CmdOrCtrl+B",
+    students: "CmdOrCtrl+Shift+S",
+    lendings: "CmdOrCtrl+L",
+    backup: "CmdOrCtrl+Shift+B",
+    settings: "CmdOrCtrl+,",
+    help: "F1",
+    shortcuts: "CmdOrCtrl+?",
+  };
+  return shortcuts[id];
+}
+
 export async function createAppMenu() {
-  // File Menu
-  const fileSubmenu = await Submenu.new({
-    text: "File",
-    items: [
-      await MenuItem.new({
-        id: "new",
-        text: "New",
-        action: () => {
-          window.dispatchEvent(
-            new CustomEvent("menu_action", { detail: "new" })
-          );
-        },
-      }),
-      await PredefinedMenuItem.new({
-        text: "",
-        item: "Separator",
-      }),
-      await MenuItem.new({
-        id: "import",
-        text: "Import",
-        action: () => {
-          window.dispatchEvent(
-            new CustomEvent("menu_action", { detail: "import" })
-          );
-        },
-      }),
-      await MenuItem.new({
-        id: "export",
-        text: "Export",
-        action: () => {
-          window.dispatchEvent(
-            new CustomEvent("menu_action", { detail: "export" })
-          );
-        },
-      }),
-      await PredefinedMenuItem.new({
-        text: "",
-        item: "Separator",
-      }),
-      await PredefinedMenuItem.new({
-        text: "Quit",
-        item: "Quit",
-      }),
-    ],
-  });
+  try {
+    // File Menu - Focus on core file operations
+    const fileSubmenu = await Submenu.new({
+      text: "File",
+      items: [
+        await createMenuItem("new", "New...", "new"),
+        await PredefinedMenuItem.new({ text: "", item: "Separator" }),
+        await createMenuItem("import", "Import Data", "import"),
+        await createMenuItem("export", "Export Data", "export"),
+        await PredefinedMenuItem.new({ text: "", item: "Separator" }),
+        await createMenuItem("settings", "Settings", "settings"),
+        await PredefinedMenuItem.new({ text: "", item: "Separator" }),
+        await PredefinedMenuItem.new({ text: "Quit", item: "Quit" }),
+      ],
+    });
 
-  // Edit Menu
-  const editSubmenu = await Submenu.new({
-    text: "Edit",
-    items: [
-      await PredefinedMenuItem.new({ text: "Undo", item: "Undo" }),
-      await PredefinedMenuItem.new({ text: "Redo", item: "Redo" }),
-      await PredefinedMenuItem.new({ text: "", item: "Separator" }),
-      await PredefinedMenuItem.new({ text: "Cut", item: "Cut" }),
-      await PredefinedMenuItem.new({ text: "Copy", item: "Copy" }),
-      await PredefinedMenuItem.new({ text: "Paste", item: "Paste" }),
-      await PredefinedMenuItem.new({ text: "Select All", item: "SelectAll" }),
-    ],
-  });
+    // Edit Menu - Standard editing operations
+    const editSubmenu = await Submenu.new({
+      text: "Edit",
+      items: [
+        await PredefinedMenuItem.new({ text: "Undo", item: "Undo" }),
+        await PredefinedMenuItem.new({ text: "Redo", item: "Redo" }),
+        await PredefinedMenuItem.new({ text: "", item: "Separator" }),
+        await PredefinedMenuItem.new({ text: "Cut", item: "Cut" }),
+        await PredefinedMenuItem.new({ text: "Copy", item: "Copy" }),
+        await PredefinedMenuItem.new({ text: "Paste", item: "Paste" }),
+        await PredefinedMenuItem.new({ text: "Select All", item: "SelectAll" }),
+        await PredefinedMenuItem.new({ text: "", item: "Separator" }),
+        await createMenuItem("refresh", "Refresh", "refresh"),
+      ],
+    });
 
-  // View Menu
-  const viewSubmenu = await Submenu.new({
-    text: "View",
-    items: [
-      await MenuItem.new({
-        id: "dashboard",
-        text: "Dashboard",
-        action: () => {
-          window.dispatchEvent(
-            new CustomEvent("navigate", { detail: "dashboard" })
-          );
-        },
-      }),
-      await MenuItem.new({
-        id: "books",
-        text: "Books",
-        action: () => {
-          window.dispatchEvent(
-            new CustomEvent("navigate", { detail: "books" })
-          );
-        },
-      }),
-      await MenuItem.new({
-        id: "students",
-        text: "Students",
-        action: () => {
-          window.dispatchEvent(
-            new CustomEvent("navigate", { detail: "students" })
-          );
-        },
-      }),
-      await MenuItem.new({
-        id: "lendings",
-        text: "Lendings",
-        action: () => {
-          window.dispatchEvent(
-            new CustomEvent("navigate", { detail: "lendings" })
-          );
-        },
-      }),
-      await PredefinedMenuItem.new({ text: "", item: "Separator" }),
-      await MenuItem.new({
-        id: "refresh",
-        text: "Refresh",
-        action: () => {
-          window.dispatchEvent(
-            new CustomEvent("menu_action", { detail: "refresh" })
-          );
-        },
-      }),
-    ],
-  });
+    // View Menu - Navigation and display options
+    const viewSubmenu = await Submenu.new({
+      text: "View",
+      items: [
+        await createNavMenuItem("dashboard", "Dashboard", "dashboard"),
+        await PredefinedMenuItem.new({ text: "", item: "Separator" }),
+        await createNavMenuItem("books", "Books", "books"),
+        await createNavMenuItem("students", "Students", "students"),
+        await createNavMenuItem("lendings", "Lending & Returns", "lendings"),
+        await PredefinedMenuItem.new({ text: "", item: "Separator" }),
+        await PredefinedMenuItem.new({
+          text: "Toggle Fullscreen",
+          item: "Fullscreen",
+        }),
+      ],
+    });
 
-  // Tools Menu
-  const toolsSubmenu = await Submenu.new({
-    text: "Tools",
-    items: [
-      await MenuItem.new({
-        id: "backup",
-        text: "Backup Database",
-        action: () => {
-          window.dispatchEvent(
-            new CustomEvent("menu_action", { detail: "backup" })
-          );
-        },
-      }),
-      await MenuItem.new({
-        id: "restore",
-        text: "Restore Database",
-        action: () => {
-          window.dispatchEvent(
-            new CustomEvent("menu_action", { detail: "restore" })
-          );
-        },
-      }),
-    ],
-  });
+    // Tools Menu - Administrative functions
+    const toolsSubmenu = await Submenu.new({
+      text: "Tools",
+      items: [
+        await createMenuItem("backup", "Backup Database", "backup"),
+        await createMenuItem("restore", "Restore Database", "restore"),
+        await PredefinedMenuItem.new({ text: "", item: "Separator" }),
+        await MenuItem.new({
+          id: "reports",
+          text: "Generate Reports",
+          action: () => {
+            window.dispatchEvent(
+              new CustomEvent("menu_action", { detail: "reports" })
+            );
+          },
+        }),
+      ],
+    });
 
-  // Help Menu
-  const helpSubmenu = await Submenu.new({
-    text: "Help",
-    items: [
-      await MenuItem.new({
-        id: "about",
-        text: `About ${schoolName}`,
-        action: () => {
-          window.dispatchEvent(
-            new CustomEvent("menu_action", { detail: "about" })
-          );
-        },
-      }),
-      await MenuItem.new({
-        id: "help",
-        text: "Help",
-        action: () => {
-          window.dispatchEvent(
-            new CustomEvent("menu_action", { detail: "help" })
-          );
-        },
-      }),
-      await MenuItem.new({
-        id: "shortcuts",
-        text: "Keyboard Shortcuts",
-        action: () => {
-          window.dispatchEvent(
-            new CustomEvent("menu_action", { detail: "shortcuts" })
-          );
-        },
-      }),
-      await MenuItem.new({
-        id: "contact",
-        text: "Contact Support",
-        action: () => {
-          window.dispatchEvent(
-            new CustomEvent("menu_action", { detail: "contact" })
-          );
-        },
-      }),
-    ],
-  });
+    // Help Menu - Support and information
+    const helpSubmenu = await Submenu.new({
+      text: "Help",
+      items: [
+        await createMenuItem("help", "User Guide", "help"),
+        await createMenuItem("shortcuts", "Keyboard Shortcuts", "shortcuts"),
+        await PredefinedMenuItem.new({ text: "", item: "Separator" }),
+        await createMenuItem("contact", "Contact Support", "contact"),
+        await createMenuItem("about", `About ${schoolName}`, "about"),
+      ],
+    });
 
-  // Create and set the menu
-  const menu = await Menu.new({
-    items: [fileSubmenu, editSubmenu, viewSubmenu, toolsSubmenu, helpSubmenu],
-  });
+    // Create and set the menu
+    const menu = await Menu.new({
+      items: [fileSubmenu, editSubmenu, viewSubmenu, toolsSubmenu, helpSubmenu],
+    });
 
-  await menu.setAsAppMenu();
-  return menu;
+    await menu.setAsAppMenu();
+    console.log("Application menu created successfully");
+    return menu;
+  } catch (error) {
+    console.error("Failed to create application menu:", error);
+    throw error;
+  }
 }

@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Book {
@@ -82,7 +82,7 @@ impl std::fmt::Display for BookStatus {
 
 impl std::str::FromStr for BookStatus {
     type Err = String;
-    
+
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "available" => Ok(BookStatus::Available),
@@ -103,7 +103,7 @@ impl std::fmt::Display for StudentStatus {
 
 impl std::str::FromStr for StudentStatus {
     type Err = String;
-    
+
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "active" => Ok(StudentStatus::Active),
@@ -124,7 +124,7 @@ impl std::fmt::Display for LendingStatus {
 
 impl std::str::FromStr for LendingStatus {
     type Err = String;
-    
+
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "lent" => Ok(LendingStatus::Lent),
