@@ -58,6 +58,7 @@ function SettingsPage() {
               </div>
             </CardContent>
           </Card>
+          {/* TODO: Add custom grades alongside default ones */}
           <Card>
             <CardHeader>
               <CardTitle>Database</CardTitle>
