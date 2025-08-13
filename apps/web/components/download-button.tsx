@@ -94,7 +94,7 @@ export function DownloadButton() {
     const asset = getBestAssetForPlatform(platformName);
     if (!asset) return "";
 
-    const ext = asset.name.split(".").pop()?.toUpperCase() || "";
+    const ext = asset.name.split(".").pop() || "";
     return ext;
   };
 

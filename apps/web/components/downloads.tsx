@@ -31,7 +31,8 @@ export function Downloads() {
       try {
         const repo = "nkurunziza-saddy/tiza";
         const response = await fetch(
-          `https://api.github.com/repos/${repo}/releases/latest`
+          `https:
+          //api.github.com/repos/${repo}/releases/latest`
         );
         if (response.ok) {
           const data = await response.json();
@@ -61,42 +62,95 @@ export function Downloads() {
 
     return release.assets.filter((a) => pattern.test(a.name));
   };
-
+  const hardCodedEstimationSizes = {
+    windows: {
+      exe: "~4mb",
+      msi: "~5mb",
+    },
+    macos: {
+      dmg: "~5mb",
+    },
+    linux: {
+      deb: "~6mb",
+      rpm: "~6mb",
+      appimage: "~87mb",
+    },
+  };
   const platforms = [
     {
       name: "Windows",
       icon: Monitor,
       description: "Windows 10/11",
-      downloads: getPlatformAssets("windows").map((asset) => ({
-        name: asset.name.split("_")[0] || asset.name,
-        format: `.${asset.name.split(".").pop()?.toUpperCase()}`,
-        size: "N/A",
-        url: asset.browser_download_url,
-      })),
+      downloads: getPlatformAssets("windows").map((asset) => {
+        const parts = asset.name
+          .replace(".exe", "")
+          .replace(".msi", "")
+          .split("_");
+        return {
+          name: `${parts[0]}_${parts[2]}`,
+          format: `.${asset.name.split(".").pop()}`,
+          size:
+            hardCodedEstimationSizes.windows[
+              asset.name
+                .split(".")
+                .pop()
+                ?.toLowerCase() as keyof typeof hardCodedEstimationSizes.windows
+            ] || "N/A",
+          url: asset.browser_download_url,
+        };
+      }),
     },
     {
       name: "macOS",
       icon: Apple,
       description: "macOS 10.15+",
-      downloads: getPlatformAssets("macOS").map((asset) => ({
-        name: asset.name.split("_")[0] || asset.name,
-        format: `.${asset.name.split(".").pop()?.toUpperCase()}`,
-        size: "N/A",
-        url: asset.browser_download_url,
-      })),
+      downloads: getPlatformAssets("macOS").map((asset) => {
+        const parts = asset.name.replace(".dmg", "").split("_");
+        return {
+          name: `${parts[0]}_${parts[2]}`,
+          format: `.${asset.name.split(".").pop()}`,
+          size:
+            hardCodedEstimationSizes.macos[
+              asset.name
+                .split(".")
+                .pop()
+                ?.toLowerCase() as keyof typeof hardCodedEstimationSizes.macos
+            ] || "N/A",
+          url: asset.browser_download_url,
+        };
+      }),
     },
     {
       name: "Linux",
       icon: Smartphone,
       description: "Multiple formats",
-      downloads: getPlatformAssets("linux").map((asset) => ({
-        name: asset.name.split("_")[0] || asset.name,
-        format: `.${asset.name.split(".").pop()?.toUpperCase()}`,
-        size: "N/A",
-        url: asset.browser_download_url,
-      })),
+      downloads: getPlatformAssets("linux").map((asset) => {
+        const ext = asset.name.split(".").pop()?.toLowerCase();
+        let namePart = "";
+        if (ext === "rpm") {
+          const parts = asset.name.replace(".rpm", "").split("-");
+          namePart = `${parts[0]}_${parts[2] || parts[1]}`;
+        } else {
+          const parts = asset.name
+            .replace(".AppImage", "")
+            .replace(".deb", "")
+            .split("_");
+          namePart = `${parts[0]}_${parts[2] || parts[1]}`;
+        }
+
+        return {
+          name: namePart,
+          format: `.${ext}`,
+          size:
+            hardCodedEstimationSizes.linux[
+              ext as keyof typeof hardCodedEstimationSizes.linux
+            ] || "N/A",
+          url: asset.browser_download_url,
+        };
+      }),
     },
   ];
+
   return (
     <section className="py-24 px-6" id="downloads">
       <div className="max-w-4xl mx-auto">
