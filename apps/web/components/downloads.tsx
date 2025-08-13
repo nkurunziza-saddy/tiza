@@ -46,13 +46,13 @@ export function Downloads() {
 
     fetchRelease();
   }, []);
-
+  console.log("Detected platform:", release);
   const getPlatformAssets = (platformName: string): Asset[] => {
     if (!release) return [];
 
     const platformPatterns: Record<string, RegExp> = {
       windows: /\.(msi|exe)$/,
-      macOS: /\.dmg$/,
+      macos: /\.(dmg|app)$/,
       linux: /\.(deb|rpm|AppImage)$/,
     };
 
@@ -97,9 +97,8 @@ export function Downloads() {
       })),
     },
   ];
-
   return (
-    <section className="py-24 px-6">
+    <section className="py-24 px-6" id="downloads">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-2xl font-medium text-foreground tracking-tight">
@@ -150,10 +149,11 @@ export function Downloads() {
                     <Button
                       variant="outline"
                       size="sm"
+                      key={downloadIndex}
                       asChild
                       className="w-full justify-between text-xs h-8"
                     >
-                      <Link key={downloadIndex} href={download.url} download>
+                      <Link href={download.url} download>
                         <div className="flex items-center space-x-2">
                           <Download className="w-3 h-3" />
                           <span>{download.name}</span>
@@ -174,11 +174,11 @@ export function Downloads() {
           ))}
         </div>
 
-        <div className="text-center mt-12">
+        {/* <div className="text-center mt-12">
           <Button variant="ghost" className="text-xs font-normal">
             Installation Guide
           </Button>
-        </div>
+        </div> */}
       </div>
     </section>
   );

@@ -2,10 +2,13 @@ name: Build Desktop App
 
 on:
   push:
-    branches: [main, master]
     tags: ["v*", "*.*.*"]
-  pull_request:
-    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to build"
+        required: true
+        default: "v0.0.0-test"
 
 jobs:
   build:
@@ -86,63 +89,54 @@ jobs:
           find apps/desktop/src-tauri/target -name "bundle" -type d 2>/dev/null || echo "No bundle directories found"
           find apps/desktop/src-tauri/target -type f \( -name "*.deb" -o -name "*.rpm" -o -name "*.AppImage" -o -name "*.dmg" -o -name "*.msi" -o -name "*.exe" -o -name "*.app" \) 2>/dev/null || echo "No bundle files found"
 
-      - name: Upload development artifacts
-        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: tiza-${{ matrix.name }}
-          path: |
-            apps/desktop/src-tauri/target/release/bundle/**/*
-            apps/desktop/src-tauri/target/*/release/bundle/**/*
-          if-no-files-found: warn
+      - name: Prepare release assets
+        shell: bash
+        run: |
+          # Create a temporary directory for release files
+          mkdir -p release_files
 
-      - name: Upload release assets (Tagged releases only)
-        if: startsWith(github.ref, 'refs/tags/')
+          # Find and copy main installer files
+          find apps/desktop/src-tauri/target -name "*.dmg" -exec cp {} release_files/ \;
+          find apps/desktop/src-tauri/target -name "*.msi" -exec cp {} release_files/ \;
+          find apps/desktop/src-tauri/target -name "*setup.exe" -exec cp {} release_files/ \;
+          find apps/desktop/src-tauri/target -name "*.deb" -exec cp {} release_files/ \;
+          find apps/desktop/src-tauri/target -name "*.AppImage" -exec cp {} release_files/ \;
+          find apps/desktop/src-tauri/target -name "*.rpm" -exec cp {} release_files/ \;
+
+          echo "Files prepared for release:"
+          ls -la release_files/
+
+      - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            apps/desktop/src-tauri/target/release/bundle/deb/*.deb
-            apps/desktop/src-tauri/target/release/bundle/appimage/*.AppImage
-            apps/desktop/src-tauri/target/release/bundle/dmg/*.dmg
-            apps/desktop/src-tauri/target/release/bundle/msi/*.msi
-            apps/desktop/src-tauri/target/release/bundle/nsis/*.exe
-            apps/desktop/src-tauri/target/aarch64-apple-darwin/release/bundle/deb/*.deb
-            apps/desktop/src-tauri/target/aarch64-apple-darwin/release/bundle/appimage/*.AppImage
-            apps/desktop/src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/*.dmg
-            apps/desktop/src-tauri/target/aarch64-apple-darwin/release/bundle/msi/*.msi
-            apps/desktop/src-tauri/target/aarch64-apple-darwin/release/bundle/nsis/*.exe
-            apps/desktop/src-tauri/target/x86_64-apple-darwin/release/bundle/deb/*.deb
-            apps/desktop/src-tauri/target/x86_64-apple-darwin/release/bundle/appimage/*.AppImage
-            apps/desktop/src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/*.dmg
-            apps/desktop/src-tauri/target/x86_64-apple-darwin/release/bundle/msi/*.msi
-            apps/desktop/src-tauri/target/x86_64-apple-darwin/release/bundle/nsis/*.exe
+          files: release_files/*
           tag_name: ${{ github.ref_name }}
           name: "Tiza Desktop v${{ github.ref_name }}"
           body: |
-            ## 🎉 Tiza Desktop ${{ github.ref_name }}
+            ## Tiza Desktop ${{ github.ref_name }}
 
-            Download the appropriate version for your operating system:
+            Download the installer for your operating system:
 
             ### Windows
             - **`.msi`** - Windows Installer (Recommended)
-            - **`.exe`** - NSIS Installer
+            - **`.exe`** - Setup Executable
 
             ### macOS
-            - **`.dmg`** - macOS Disk Image
-            - **`.app`** - macOS Application Bundle
+            - **`aarch64.dmg`** - Apple Silicon (M1/M2/M3)
+            - **`x64.dmg`** - Intel Macs
 
             ### Linux
+            - **`.AppImage`** - Universal Linux (Run anywhere)
             - **`.deb`** - Ubuntu/Debian Package
-            - **`.AppImage`** - Universal Linux Application
+            - **`.rpm`** - RedHat/Fedora Package
 
-            ### Installation Instructions
-            - **Windows**: Download and run the `.msi` file
-            - **macOS**: Download the `.dmg`, open it, and drag Tiza to Applications
-            - **Linux**: Download `.deb` and install with `sudo dpkg -i filename.deb` or use the `.AppImage`
+            ### Installation
+            - **Windows**: Run the `.msi` file
+            - **macOS**: Open `.dmg` and drag to Applications
+            - **Linux**: Make `.AppImage` executable or install `.deb`/`.rpm`
 
             ---
-
-            **Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ github.event.before }}...${{ github.ref_name }}
+            **Auto-download**: Visit our website for automatic platform detection!
           draft: false
           prerelease: false
           generate_release_notes: true

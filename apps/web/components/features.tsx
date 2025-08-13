@@ -47,7 +47,7 @@ export function Features() {
   ];
 
   return (
-    <section className="py-24 px-6">
+    <section className="py-24 px-6" id="learn-more">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-16 space-y-3">
           <h2 className="text-2xl font-medium text-foreground tracking-tight">

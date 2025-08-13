@@ -13,6 +13,7 @@ body {
   @apply bg-white dark:bg-neutral-950;
   font-size: 16px;
   line-height: 1.6;
+  scroll-behavior: smooth;
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
