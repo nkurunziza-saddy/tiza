@@ -31,8 +31,7 @@ export function Downloads() {
       try {
         const repo = "nkurunziza-saddy/tiza";
         const response = await fetch(
-          `https:
-          //api.github.com/repos/${repo}/releases/latest`
+          `https://api.github.com/repos/${repo}/releases/latest`
         );
         if (response.ok) {
           const data = await response.json();
@@ -62,6 +61,7 @@ export function Downloads() {
 
     return release.assets.filter((a) => pattern.test(a.name));
   };
+
   const hardCodedEstimationSizes = {
     windows: {
       exe: "~4mb",
@@ -150,7 +150,6 @@ export function Downloads() {
       }),
     },
   ];
-
   return (
     <section className="py-24 px-6" id="downloads">
       <div className="max-w-4xl mx-auto">
