@@ -1,5 +1,10 @@
-import { Badge } from "@/components/ui/badge";
 import { Heart, Mail } from "lucide-react";
+
+function makeGmailLink(subject: string, body: string): string {
+  const encodedSubject = encodeURIComponent(subject);
+  const encodedBody = encodeURIComponent(body);
+  return `mailto:saddynkurunziza8@gmail.com?subject=${encodedSubject}&body=${encodedBody}`;
+}
 
 export function Footer() {
   return (
@@ -14,7 +19,8 @@ export function Footer() {
 
           <div className="flex items-center space-x-6">
             <a
-              href="#"
+              href={makeGmailLink("Hi Saddy,", "")}
+              target="_blank"
               className="text-muted-foreground hover:text-foreground transition-colors flex items-center space-x-2 text-xs"
             >
               <Mail className="w-4 h-4" />

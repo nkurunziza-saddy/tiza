@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export function makeGmailLink(subject: string, body: string): string {
   const encodedSubject = encodeURIComponent(subject);
   const encodedBody = encodeURIComponent(body);
-  return `mailto:saddynkurunziza8@gmail.com?subject=${encodedSubject}&body=${encodedBody}`;
+  return `mailto:saddynkurunzizaa@gmail.com?subject=${encodedSubject}&body=${encodedBody}`;
 }
 
 export function formatKeys(key: string) {
