@@ -1,10 +1,10 @@
-# Tiza - Modern Library Management System
+## Tiza - Modern Library Management System
 
-A modern, fast, and secure library management system built with Tauri and Next.js.
+A modern, fast, and secure library management system built with Tauri.
 
 ![Tiza Screenshot](docs/screenshot.png)
 
-## Features
+### Features
 
 - **Lightning Fast**: Built with Rust and Tauri for maximum performance
 - **Cross-Platform**: Available for Windows, macOS, and Linux
@@ -15,25 +15,25 @@ A modern, fast, and secure library management system built with Tauri and Next.j
 - **Lending System**: Easy book checkout and return tracking
 - **Reports**: Generate reports in PDF format
 
-## Download
+### Download
 
 Visit our [download page](https://nkurunziza-saddy.github.io/tiza/#downloads) to get the latest version for your platform.
 
-## 🛠️ Development
+### 🛠️ Development
 
 This is a monorepo containing:
 
 - `apps/desktop`: Tauri desktop application
 - `apps/web`: Next.js download website
 
-### Prerequisites
+#### Prerequisites
 
 - Node.js 18+
 - pnpm
 - Rust (for desktop app)
 - System dependencies for Tauri (see [Tauri prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites))
 
-### Getting Started
+#### Getting Started
 
 1. Clone the repository:
 
@@ -60,7 +60,7 @@ cd apps/web
 pnpm dev
 ```
 
-### Building
+#### Building
 
 ```bash
 # Build desktop app for current platform
@@ -72,13 +72,13 @@ cd apps/web
 pnpm build
 ```
 
-## 📖 Documentation
+### Documentation
 
 - [Installation Guide](docs/installation.md)
 - [User Guide](docs/user-guide.md)
 - [Development Guide](docs/development.md)
 
-## 🤝 Contributing
+### Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -88,17 +88,17 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📝 License
+### License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the Prosperity Public License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+### Acknowledgments
 
 - Built with [Tauri](https://tauri.app/)
 - Web interface powered by [Next.js](https://nextjs.org/)
 - UI components from [shadcn/ui](https://ui.shadcn.com/)
 
-## 📞 Support
+### Support
 
 If you encounter any issues or have questions:
 
