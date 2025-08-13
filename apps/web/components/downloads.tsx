@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Download, Monitor, Apple, Smartphone } from "lucide-react";
 import Link from "next/link";
+import { DownloadButton } from "./download-button";
 
 interface Asset {
   name: string;
@@ -227,11 +228,9 @@ export function Downloads() {
           ))}
         </div>
 
-        {/* <div className="text-center mt-12">
-          <Button variant="ghost" className="text-xs font-normal">
-            Installation Guide
-          </Button>
-        </div> */}
+        <div className="text-center mt-12">
+          <DownloadButton />
+        </div>
       </div>
     </section>
   );

@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { DownloadButton } from "./download-button";
 
 export function Hero() {
   return (
@@ -28,10 +27,9 @@ export function Hero() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-sm mx-auto">
-          {/* <Button size="lg" className="font-normal text-sm h-10 px-6">
+          <Button size="lg" className="font-normal text-sm h-10 px-6">
             <Link href="#downloads">Download</Link>
-          </Button> */}
-          <DownloadButton />
+          </Button>
           <Button
             size="lg"
             variant="outline"

@@ -109,7 +109,7 @@ export function DownloadButton() {
 
   if (!release) {
     return (
-      <Button size="lg" className="font-normal text-sm h-10 px-6" disabled>
+      <Button variant="ghost" className="text-xs font-normal" disabled>
         <Download className="w-4 h-4 mr-2" />
         Download Unavailable
       </Button>
@@ -121,12 +121,13 @@ export function DownloadButton() {
 
   return (
     <Button
-      size="lg"
-      className="font-normal text-sm h-10 px-6"
+      variant="ghost"
+      className="text-xs font-normal"
       onClick={handleDownload}
       disabled={!asset}
     >
-      Download for {platform} {fileExt && `(.${fileExt})`}
+      Download for your platform ({platform}
+      {fileExt && ` - .${fileExt})`}
     </Button>
   );
 }
