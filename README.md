@@ -4,7 +4,7 @@ A modern, fast, and secure library management system built with Tauri and Next.j
 
 ![Tiza Screenshot](docs/screenshot.png)
 
-## 🚀 Features
+## Features
 
 - **Lightning Fast**: Built with Rust and Tauri for maximum performance
 - **Cross-Platform**: Available for Windows, macOS, and Linux
@@ -15,17 +15,9 @@ A modern, fast, and secure library management system built with Tauri and Next.j
 - **Lending System**: Easy book checkout and return tracking
 - **Reports**: Generate reports in PDF format
 
-## 📥 Download
+## Download
 
-Visit our [download page](https://nkurunziza-saddy.github.io/tiza) to get the latest version for your platform.
-
-### Quick Download Links
-
-- [Windows (.msi)](https://github.com/nkurunziza-saddy/tiza/releases/latest/download/tiza_x64_en-US.msi)
-- [macOS (.dmg)](https://github.com/nkurunziza-saddy/tiza/releases/latest/download/tiza_x64.dmg)
-- [Linux (.deb)](https://github.com/nkurunziza-saddy/tiza/releases/latest/download/tiza_amd64.deb)
-- [Linux (.rpm)](https://github.com/nkurunziza-saddy/tiza/releases/latest/download/tiza-1.x86_64.rpm)
-- [Linux (AppImage)](https://github.com/nkurunziza-saddy/tiza/releases/latest/download/tiza_amd64.AppImage)
+Visit our [download page](https://nkurunziza-saddy.github.io/tiza/#downloads) to get the latest version for your platform.
 
 ## 🛠️ Development
 
@@ -60,23 +52,24 @@ pnpm install
 
 ```bash
 # Desktop app
-pnpm dev:desktop
+cd apps/desktop
+pnpm tauri dev
 
 # Web app
-pnpm dev:web
+cd apps/web
+pnpm dev
 ```
 
 ### Building
 
 ```bash
 # Build desktop app for current platform
-pnpm build:desktop
+cd apps/desktop
+pnpm tauri build
 
 # Build web app
-pnpm build:web
-
-# Build everything
-pnpm build:all
+cd apps/web
+pnpm build
 ```
 
 ## 📖 Documentation

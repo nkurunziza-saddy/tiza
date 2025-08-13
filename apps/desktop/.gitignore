@@ -17,7 +17,7 @@ dist-ssr
 .tanstack/*
 !.vscode/extensions.json
 .idea
-todo.md
+/*.local.md
 .DS_Store
 *.suo
 *.ntvs*
